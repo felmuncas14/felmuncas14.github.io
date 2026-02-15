@@ -1,0 +1,5 @@
+# Extraído de github.com/jekyll/minima, modificado por Felipe Muñoz Casasola
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata

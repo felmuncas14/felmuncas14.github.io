@@ -1,0 +1,377 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+
+\title{Reinstalación completa del sistema paso por paso}
+\author{Felipe Muñoz Casasola}
+\date{24 de enero de 2026}
+
+\hypersetup{
+	pdfinfo={
+		Subject={Reinstalación del sistema},
+           	Creator={LaTeX},
+           	CreationDate={D:20260124110000+00'00},
+           	Producer={LaTeX}
+    	}
+}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    \tableofcontents
+    \clearpage
+    \section{Copia de seguridad previa}
+    Seguir las indicaciones de los documentos de copias de seguridad para hacer
+    una copia de seguridad del sistema antes de reinstalar. Recuerda los
+    marcadores del navegador, los perfiles (cerrar las cuentas si no se pueden
+    trasladar al nuevo sistema).
+
+    \section{Documentación a tener preparada}
+    Este documento PDF y todos los documentos PDF de gestión del sistema, el
+    manual de instalación de Debian.
+
+    \section{Instalación básica}
+    Uso la instalación por red mínima, que tiene el tamaño de imagen más
+    pequeño. El modo de instalación es el modo gráfico experto. Selecciono que
+    se separen las particiones \texttt{home},
+    \texttt{tmp} y \texttt{var}. El entorno de escritorio a instalar (por si
+    fallara el dwm) es LXQt. GRUB está instalado con la opción para detectar
+    otros sistemas operativos, solamente por si acaso hiciera falta. El
+    superusuario (raíz) está activado, y tiene la misma contraseña que el único
+    usuario que se crea, el usuario usuario.
+
+    \subsection{Vim}
+    Instalar vim provisionalmente (tendré que recompilarlo para tener el Vimtex
+    posteriormente) y eliminar \texttt{nano} y \texttt{FeatherPad} (o el editor
+    de texto que venga por defecto con el entorno de escritorio.
+
+    \subsection{Añadir \texttt{sbin} a la ruta \textit{PATH}}
+    Añadir en el \textit{PATH} que se encuentra en \texttt{/etc/profile} las
+    rutas de \texttt{sbin} y \texttt{/usr/local/sbin} en los dos casos del
+    \texttt{if} en el que se comprueba si el usuario es el superusuario o no.
+
+    \subsection{Permitir al usuario usar \texttt{sudo}}
+    Para ello tengo que agregar al usuario al grupo de usuarios
+    \texttt{sudo}. Por ejemplo con el comando:
+
+    \texttt{usermod -a -G sudo usuario}
+
+    Y para que el cambio tenga efecto se tiene que reiniciar el sistema.
+
+    \section{Archivos de configuración a guardar}
+    Los archivos de configuración se deben guardar en un dispositivo con un
+    sistema de archivos que permita los enlaces simbólicos, pues el tema del
+    ratón requiere guardar algunos enlaces simbólicos.
+
+    \begin{enumerate}
+    	   \item QEMU:
+    	           \subitem La carpeta «Máquinas virtuales» dentro de la carpeta
+		   raíz del usuario, que tiene los discos duros de las máquinas
+		   virtuales que tengo.
+    	   \item Navegador Mullvad
+    	   	   \subitem Archivo de marcadores.
+    	   	   \subitem Archivo de configuración de NoScript.
+    	   	   \subitem Archivo de configuración de Ublock Origin.
+    	   	   \subitem Archivo de configuración de Privacy Badger.
+    	   	   \subitem Archivo de configuración de Dark Reader.
+    	   	   \subitem Archivo de configuración de Canvas Blocker.
+    	   \item SearxNG
+    	   	   \subitem Archivo de configuración en
+		   \texttt{$\sim$/.config/searxng/settings.yml}.
+		   \subitem \textit{Quadlet} en
+		   \texttt{$\sim$/.config/containers/systemd/searxng.container}.
+    	   \item Tema del ratón
+    	           \subitem Carpeta
+		   \texttt{/usr/share/icons/material\_light\_cursors}.
+	   \item Synchting
+		   \subitem Archivos (no directorios) en la carpeta
+		   \texttt{$\sim$/.local/stat/syncthing/}.
+		   \subitem Carpetas compartidas en Syncthing, pues si no
+		   existen con la carpeta \texttt{.synchting} dentro, Syncthing
+		   se bloquea.
+	   \item Autenticador Proton
+		   \subitem Exportación de las claves almacenadas.
+	   \item Alacritty
+		   \subitem \texttt{\$HOME/.config/alacritty/alacritty.toml}.
+	   \item Rclone
+		   \subitem Archivo de configuración de Rclone, que actualmente
+		   se encuentra en
+		   \texttt{$\sim$/.config/r\-clone/\-rclone.conf}.
+		   \subitem Servicio para que automáticamente (activarlo para
+		   que se ejecute en cada arranque) se guarde una copia de
+		   seguridad cifrada en MEGA, actualmente en
+		   \texttt{/etc/\-systemd/system/\-rclone.service}. Debo tener la
+		   carpeta Documentos previamente restaurada para que al
+		   reiniciar el sistema no borre la copia de seguridad en la
+		   nube porque los documentos estén vacíos.
+		   \subitem Otro servicio pero para hacer copia de seguridad del
+		   escritorio, actualmente en
+		   \texttt{/etc/syste\-md/\-system/rclone\_e.service}. Tengo que
+		   haber restaurado previamente la carpeta Escritorio.
+	   \item \LaTeX{}
+		   \subitem Carpeta \texttt{$\sim$/texmf}, donde se guardan los
+		   paquetes de \LaTeX{} que haya creado.
+	   \item Vim
+		   \subitem Carpeta \texttt{.vim} en el directorio raíz del
+		   usuario.
+		   \subitem Archivo \texttt{.vimrc} en la carpeta raíz del
+		   usuario.
+	   \item KeePassXC
+		   \subitem Tengo que asegurarme de que los archivos de las
+		   contraseñas los haya guardado.
+           \subitem También tengo que guardar la lista de frases contraseña
+           que tengo en español.
+	   \item DWM
+		   \subitem Carpeta \texttt{.barra} en el directorio raíz del
+		   usuario.
+		   \subitem Archivo de configuración de DWM
+		   \texttt{config.h}.
+		   \subitem Carpeta \texttt{.fonts} en la carpeta raíz del
+		   usuario.
+		   \subitem Carpeta \texttt{dwm} donde se encuentra el archivo
+		   \texttt{xinitr}, que se encuentra en la misma carpeta en la
+		   que el gestor de escritorio LXQt esté instalado por defecto,
+		   que actualmente es en \texttt{/etc/xdg}.
+		   \subitem Archivo \texttt{dwm.desktop} para que aparezca como
+		   un entorno de escritorio a seleccionar cuando se inicia
+		   sesión, actualmente se encuentra en
+		   \texttt{/usr/share/xsessions/dwm.desktop}.
+	   \item Terminal
+		   \subitem Archivo \texttt{.bashrc}.
+    \end{enumerate}
+
+    \section{Instalación del navegador Mullvad}
+    Accedo al navegador Firefox que viene preinstalado, y me meto en la página
+    oficial del navegador para las instrucciones de cómo añadir el repositorio
+    del navegador Mullvad a los repositorios del sistema para que se pueda
+    actualizar automáticamente con la orden de actualizar.
+
+    Una vez instalado el navegador Mullvad, hay que eliminar el navegador
+    Firefox.
+
+    También tengo que instalar los siguientes complementos (y cargar la
+    configuración que guardé previamente sobre ellos):
+    \begin{itemize}
+    	   \item uBlock Origin.
+    	   \item NoScript.
+    	   \item Privacy Badger.
+    	   \item CanvasBlocker.
+    	   \item Dark Reader.
+    \end{itemize}
+    
+    Además, tengo que instalar la extensión Decentraleyes, de la que no guardo
+    configuración. Y eliminar el complemento del navegador Mullvad que viene por
+    defecto.
+
+    \section{Instalación de SearxNG}
+    Si todavía existe la opción, es mejor instalarlo con el contenedor,
+    preferiblemente \texttt{podman}, pues me suele dar fallos al instalar con
+    las otras alternativas que se ofrecen actualmente. Una vez hecho esto usar
+    la guía de la página de SearxNG para redirigir la configuración que guardaré
+    en \texttt{\~/.config/searxng/} a la configuración del contenedor. Para
+    generar la
+    configuración simplemente descargaré el archivo de configuración del
+    repositorio de GitHub y lo compararé con el que he guardado de
+    configuración, para activar y desactivar las mismas opciones. Esto lo hago
+    así porque es posible que algún motor de búsqueda haya quedado obsoleto y al
+    aparecer en el antiguo archivo de configuración el servidor falle.
+
+    Para hacer que se inicie desde el principio, se pueden seguir las
+    instrucciones que haya actualizadas en la web y la página 5 del manual de la
+    orden \texttt{podman-systemd.unit}. Ahora mismo lo que se deben utilizar son
+    los \texttt{quadlet}. Actualmente lo he generado con \texttt{podlet}, que
+    está todavía en beta, pero me servirá el ejemplo en caso de que hiciera
+    falta actualizarlo.
+
+    Tengo que prestar atención a los errores haciendo un \texttt{status} con
+    \texttt{systemctl --user}, para corregir los posibles errores en el archivo
+    de configuración.
+
+    El \textit{quadlet} está en la carpeta
+    \texttt{$\sim$/.config/containters/systemd/searxng.container}
+
+    \section{Instalación de QEMU}
+    Para volver a instalar QEMU en el nuevo sistema tengo que seguir los
+    siguientes pasos:
+
+    \begin{enumerate}
+    	   \item \texttt{sudo apt install virt-manager}. Esto instala el gestor
+		   de las máquinas virtuales junto con QEMU.
+    \end{enumerate}
+    
+    Una vez hecho esto ya tengo instalado el sistema base. Solamente queda
+    copiar los discos duros virtuales de la configuración que se guardó, y
+    configurarlas. Para ello simplemente tengo que crear nuevas máquinas
+    virtuales usando la opción para importar con una imagen de disco existente,
+    que previamente guardé antes de reinstalar el sistema.
+
+    \section{Tema del ratón}
+    Instalar el tema \textit{Material Cursors} que se encuentra en la página
+    \href{https://www.gnome-look.org}{www.gnome-look.org}. Que se encuentra en
+    GitHub en la página
+    \href{https://github.com/varlesh/material-cursors}
+    {https://github.com/varlesh/material-cursors}. Desinstalar las herramientas
+    para instalarlo inmediatamente después de la instalación.
+
+    Nótese que el guion \texttt{build.sh} no me funciona, tengo que usar el que
+    he guardado corregido. Actualmente tarda mucho en terminar de «compilar» los
+    cursores.
+
+    Si no funciona el instalador del tema del ratón, se puede hacer manualmente,
+    para ello se tiene que actualizar la alternativa actualmente llamada
+    \texttt{x-cursor-theme}. Para ello, veo a qué archivo apunta por defecto,
+    para quedarme con la ruta en la que se encuentran los temas del ratón. Y
+    entonces pego en la carpeta padre (donde se estarán almacenando todos los
+    temas del ratón) la carpeta con el tema del ratón que he almacenado
+    previamente. Una vez hecho esto, actualizo con \texttt{update-alternatives}
+    la referencia para que apunte al archivo \texttt{cursor.theme} del tema que
+    he copiado.
+
+    Una vez hecho eso, al reiniciar el sistema se actualizará el tema del ratón.
+
+    \section{Conexión por ssh a mi cuenta de GitHub}
+    Seguir las instrucciones de GitHub para conseguirlo.
+
+    \section{Instalación de Syncthing}
+    Seguir las indicaciones de la página web oficial de Syncthing.
+
+    También tengo que copiar exactamente igual la carpeta que se especifique en
+    el manual de Syncthing en la que guarda la configuración, que actualmente es
+    \texttt{$\sim$/.local/state/syncthing/} y copiarla directamente antes de
+    arrancar Syncthing (y después de instalarlo). La carpeta \texttt{index} que
+    hay dentro de la carpeta con la configuración de Syncthing es mejor no
+    copiarla porque es posible que el formato de almacenar esa información
+    cambia si instalo Synchting de nuevo (aunque sea la misma versión porque
+    mantenga actualizada la del ordenador), por tanto solamente copio el resto.
+
+    \section{Instalación del Autenticador de Proton}
+    Simplemente sigo las indicaciones de instalación de su web. Y seguidamente
+    importo el archivo de claves que he guardado previamente.
+
+    \section{Instalación de Rclone}
+    Instalar Rclone siguiendo las instrucciones de instalación de su página web
+    y copiar el archivo de configuración guardado donde Rclone tenga su archivo
+    de configuración.
+
+    Para los servicios de copia de seguridad automática de las carpetas
+    Documentos y Escritorio, tengo que copiar los archivos \texttt{.service} en
+    la carpeta correspondiente a los servicios del sistema (quizá debería
+    ponerlos junto a los servicios del usuario, pero no me voy a arriesgar a
+    cambiarlo y que falle, por el momento).
+
+    \section{Instalación de Qterminal}
+    Debería venir instalado por defecto, no requiere una configuración más allá
+    de la simple instalación.
+
+    \section{Instalación de \LaTeX{}}
+    Simplemente sigo las instrucciones de la página web para instalar la
+    distribución de \LaTeX{} que prefiera.
+
+    \subsection{Migración de mis paquetes}
+    Tengo que crear una carpeta \texttt{texmf}, de acuerdo con las directrices
+    actuales para añadir paquetes propios a LaTeX con los paquetes que tenga en
+    mi anterior ordenador.
+
+    \section{Instalación de Vimtex completa}
+    Seguir las instrucciones del archivo correspondiente.
+
+    \section{Instalación de KeePassXC}
+    Viene ya instalado en la carpeta Escritorio, pero tengo que crear un enlace
+    simbólico en \texttt{bin} para poderlo iniciar desde el \texttt{dpanel}.
+    También puedo actualizarlo simplemente descargando el último
+    \texttt{AppImage} de su página oficial.
+
+    \section{Instalación del tema de Thunar}
+    El tema que tengo instalado está descargado de
+    \href{https://github.com/vinceliuice/Graphite-gtk-theme}
+    {https://github.com/vinceliuice/Graphite-gtk-theme}. En la configuración de
+    apariencia de LXQt hay que habilitar los temas para GTK, pues si no no
+    funcionará correctamente en las aplicaciones que lo soporten.
+    
+    \section{Instalación del tema de GRUB}
+    La página para instalar el tema para Thunar también contendrá información
+    sobre la instalación del mismo tema en GRUB. Me he quedao por aquí
+    configurando.
+
+    \section{Instalación del correo de Tuta}
+    Simplemente instalo su aplicación e inicio sesión.
+
+    \section{Instalación del BlueTooth}
+    Instalar \texttt{blueman-manager}.
+
+    \section{Instalación de Tor}
+    Seguir las instrucciones de instalación para instalarlo en \texttt{opt}.
+
+    \section{Instalación de DWM}
+    La aplicación para realizar las capturas de pantalla será
+    \texttt{screengrab} (o la aplicación que venga por defecto para realizar
+    capturas de pantalla con el entorno de escritorio). En caso de cambiar
+    cualquier otra aplicación también tendré que cambiarla debidamente en el
+    archivo de configuración de DWM.
+
+    En el caso de los archivos de configuración es mejor hacerlo como en el caso
+    de SearxNG, comparar el archivo de configuración actual con la última
+    versión que haya, y modificar el de la última versión en consecuencia. Hay
+    que tener cuidado con modificar también la tecla \texttt{MODKEY}.
+
+    Antes de iniciar dwm hay que comprobar que el guion que genera la barra
+    funcione correctamente, pues está mal hecho y puede fallar dependiendo del
+    sistema.
+
+    Ahora basta decirle a LXQt el tema que debe poner (para el gestor de
+    archivos y el resto de aplicaciones del sistema que siga usando) en DWM.
+    Para ello, debo consultar en la wiki de LXQt dónde se encuentran los
+    archivos de configuración. Los locales actualmente se encuentran en
+    \texttt{$\sim$/.config/lxqt}, y los globales en \texttt{/etc/xdg/lxqt}.
+    Tengo que copiar los locales (una vez configurado los ajustes que se deseen
+    dentro de LXQt usando su aplicación gráfica para establecerlos. Véase
+    \href{https://wiki.archlinux.org/title/Qt#Configuration_of_Qt_5/6_applications_under_environments_other_than_KDE_Plasma}
+    {https://wiki.archlinux.org/title/Qt\#Configuration\_of\_Qt\_5/6\_applications\_under\_\-environments\_\-other\_than\_KDE\_Plasma}.
+
+    En el archivador que viene por defecto hay que tener cuidado, pues las
+    opciones de comprimir y descomprimir no funcionan, pues por defecto en la
+    configuración del gestor de archivos aparece que la herramienta para los
+    archivos comprimidos es \texttt{xarchiver}, cuando debería ser
+    \texttt{lxqt-archiver}.
+
+    Usando actualmente \texttt{lxappearance} se puede configurar cómo se ven
+    en general las aplicaciones. Para arreglar que el ratón no se vea sin el
+    tema instalado en los bordes de DWM hay que seguir las instrucciones del
+    enlace
+    \href{https://unix.stackexchange.com/questions/541766/change-icon-and-cursor-theme-in-dwm}
+    {https://unix.stackexchange.com/questions/541766/change-icon-and-cursor-theme-in-dwm}
+
+    \section{Terminación}
+    Desinstalar las herramientas como \texttt{wget} y \texttt{curl} que se hayan
+    necesitado instalar para instalar algunas de las aplicaciones. Y comprobar
+    que Rclone esté funcionando correctamente.
+\end{document}

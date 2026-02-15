@@ -1,0 +1,86 @@
+---
+layout: base
+---
+{% comment %}
+Modificado por Felipe Muñoz Casasola, original de
+Minima, en github.com/jekyll/minima bajo licencia MIT.
+{% endcomment %}
+<div class="home">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  {{ content }}
+
+
+  {% if site.paginate %}
+    {% assign posts = paginator.posts %}
+  {% else %}
+    {% assign posts = site.posts %}
+  {% endif %}
+
+  {%- assign date_format = site.minima.date_format | default: "%d-%m-%Y" -%}
+
+  {%- if posts.size > 0 -%}
+    {%- if page.list_title -%}
+      <h2 class="post-list-heading">{{ page.list_title }}</h2>
+    {%- endif -%}
+    <ul class="post-list">
+      {%- for post in posts -%}
+      <li>
+        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if site.minima.show_excerpts -%}
+          {{ post.excerpt }}
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+    <h2 class="post-list-heading">Guías en pdf (fuentes <a class="next-page" href="{{ 'recursos/Fuentes' | relative_url }}">aquí</a>)</h2>
+    <ul class="post-list">
+    {%- for pdf in site.static_files -%}
+    {%- if pdf.path contains 'recursos/PDFs' -%}
+        <li>
+		<span class="post-meta">{{ pdf.modified_time | date: date_format }}</span>
+		<h3>
+			<a class="post-link" href="{{ pdf.path | relative_url }}">
+				{{ pdf.basename | escape }}
+			</a>
+		</h3>
+	</li>
+  {%- endif -%}
+    {%- endfor -%}
+    </ul>
+
+    {% if site.paginate %}
+      <div class="pager">
+        <ul class="pagination">
+        {%- if paginator.previous_page %}
+          <li>
+            <a href="{{ paginator.previous_page_path | relative_url }}" class="previous-page" title="Go to Page {{ paginator.previous_page }}">
+              {{ paginator.previous_page }}
+            </a>
+          </li>
+        {%- else %}
+          <li><div class="pager-edge">•</div></li>
+        {%- endif %}
+          <li><div class="current-page">{{ paginator.page }}</div></li>
+        {%- if paginator.next_page %}
+          <li>
+            <a href="{{ paginator.next_page_path | relative_url }}" class="next-page" title="Go to Page {{ paginator.next_page }}">
+              {{ paginator.next_page }}
+            </a>
+          </li>
+        {%- else %}
+          <li><div class="pager-edge">•</div></li>
+        {%- endif %}
+        </ul>
+      </div>
+    {%- endif %}
+</div>

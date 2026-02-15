@@ -1,0 +1,170 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage[margin=2cm]{geometry}
+
+\title{Configurar Vimtex}
+\author{Felipe Muñoz Casasola}
+\date{26 de junio de 2025}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    \tableofcontents
+    \clearpage
+
+    En este documento voy a describir cómo instalé y configuré
+    Vimtex para trabajar con LaTeX y Vim.
+
+    \section{Enlaces útiles}
+    \begin{enumerate}
+       \item \href{https://github.com/lervag/vimtex}{https://github.com/lervag/vimtex}
+           \subitem \href{https://web.archive.org/web/20250623090325/https://github.com/lervag/vimtex}{Archivado}
+       \item \href{https://ejmastnak.com/tutorials/vim-latex/vimtex/}{https://ejmastnak.com/tutorials/vim-latex/vimtex/}
+           \subitem \href{https://web.archive.org/web/20250524001805/https://ejmastnak.com/tutorials/vim-latex/vimtex/}{Archivado} 
+    \end{enumerate}
+    
+
+    \section{Preparar Vim para Vimtex}
+
+    Para empezar, necesito compilar Vim con las siguientes opciones activadas: \texttt{autoservername}, \texttt{clientserver}, \texttt{python3} (para UltiSnips).
+
+    Para ello, tengo que realizar los siguientes pasos:
+
+    \begin{enumerate}
+        \item Descargar el código fuente de Vim. Puedo ejecutar lo siguiente:
+		\begin{verbatim}
+		    git clone https://github.com/vim/vim.git
+		\end{verbatim}
+	\item Para configurarlo, puedo ver las opciones haciendo:
+		\begin{verbatim}
+		    cd vim/src/
+		    ./configure --help
+		\end{verbatim}
+	\item Para compilarlo como debo, hago:
+		\begin{verbatim}
+		    sudo apt install libxt-dev libgtk-3-dev libpython3-dev
+		    ./configure --enable-gui=gtk3 --enable-autoservername
+		\end{verbatim}
+	\item Y ahora edito el archivo Makefile que se encuentra en la misma ubicación, y descomento la línea
+
+	"\texttt{CONF\_OPT\_PYTHON3 = --enable-python3interp}".
+
+	\item Más información sobre este proceso en \href{https://github.com/vim/vim/blob/master/src/INSTALL}{https://github.com/vim/vim/blob/master/src/INSTALL}.
+	
+	\item \texttt{make} y para comprobar que la configuración es la correcta puedo probar con \texttt{./vim --version} y comprobar que las características que quería están activadas, si está todo correcto, lo instalo con \texttt{sudo make install}.
+    \end{enumerate}
+    \clearpage
+    
+    \section{Instalar Vimtex}
+    Para instalar Vimtex, descargo el complemento en una carpeta bajo \texttt{$\sim$ /.vim/pack/LaTeX/start/} y aquí es dónde ejecuto \texttt{git clone https://github.com/lervag/vimtex.git}.
+
+    Ahora tengo que editar los archivos de configuración de Vimtex, hay en \texttt{vimtex/ftplugin/} y en \texttt{vimtex/\-plugin/}. Los de \texttt{plugin} son configuraciones que se cargan en el arranque de Vim, y solamente deberían ser opciones globales de Vimtex, mientras que los de \texttt{ftplugin} son configuraciones locales para los archivos tex, donde debieran ir el resto de cosas que solo hace falta que estén definidas para los archivos tex. Mi configuración actual de estos dos archivos es:
+
+    Archivo \texttt{plugin/vimtex.vim}
+    \begin{verbatim}
+" Inicio de mi configuración
+"
+
+let g:vimtex_compiler_latexmk = {
+        \ 'aux_dir' : 'build/',
+        \ 'pdfxelatex' : 'xelatex',
+        \}
+
+let g:vimtex_view_general_viewer = 'evince'
+" Fin de mi configuración
+"
+    \end{verbatim}
+
+    Lo que hago es básicamente decirle que la compilación (hecha con \texttt{latexmk} por defecto) sea dentro de una carpeta \texttt{build} y que mi visor de pdf es Evince.
+    Archivo \texttt{ftplugin/tex.vim}
+    \begin{verbatim}
+"
+" Configuración introducida por mí
+"
+
+let maplocalleader = " "        " Establece la tecla <localleader> a usar
+let conceallevel = 2    " Esto es una recomendación del manual para la función
+" de sustituir algunos comandos por texto.
+
+set number
+
+" Inicio de atajos del teclado personalizados
+
+" Atajo para llamar al que hace lo de synctex, si estoy escribiendo LaTeX
+" y quiero ver en el pdf una zona de lo que estoy escribiendo, entonces
+" pulso <F4> y me lleva en el visualizador de pdf a esa línea que corresponde
+" al LaTeX en el que se encuentra el cursor.
+nmap <F4> :call SVED_Sync()<CR>
+
+" Fin de atajos del teclado personalizados
+
+"
+" Fin de la configuración introducida por mí
+"
+    \end{verbatim}
+
+    Para generar la ayuda de Vimtex, y que el comando en Vim \texttt{:help vimtex} funcione, es necesario ejecutar en Vim \texttt{:helptags ALL}.
+
+    Nótese que para esta configuración he dado por supuesto que \texttt{SVED} está instalado. Este complemento sirve para hacer a Evince compatible con Vim.
+
+    Ahora voy a ver qué ajustes adicionales necesito para hacer de Vimtex una máquina de guerra.
+
+    \clearpage
+    
+    \section{Instalar SVED}
+    Para instalar \texttt{SVED} debo seguir las instrucciones en \href{https://github.com/peterbjorgensen/sved}{https://github.com/peterbjorgensen/sved}.
+
+    \section{Instalar UltiSnips}
+    Para instalar UltiSnips en Vim, ejecuto lo siguiente:
+
+    \begin{verbatim}
+mkdir ~/.vim/pack/Snippets/start
+cd ~/.vim/pack/Snippets/start
+git clone https://github.com/SirVer/ultisnips
+    \end{verbatim}
+
+    Según las instrucciones actuales de UltiSnip, debo ejecutar también:
+
+    \begin{verbatim}
+mkdir -p ~/.vim/ftdetect/
+ln -s ~/.vim/pack/Snippets/start/ultisnips/ftdetect/* ~/.vim/ftdetect/
+    \end{verbatim}
+
+    No obstante, las instrucciones más actualizadas se encontrarán en algún archivo bajo \href{https://github.com/SirVer/ultisnips/tree/master/doc}{https://github.com/Si\-rVer/ultisnips/tree/master/doc}. Que será el que luego tendré disponible, tras haber seguido las instrucciones ejecutando (de nuevo) \texttt{:helptags ALL}.
+
+    Para empezar a crear \textit{snippets} tengo que crear una carpeta \texttt{UltiSnip} bajo \texttt{.vim}, donde guardaré mis \textit{snippets}, en ella puedo guardar \textit{snippets} cada uno para un tipo de archivo distinto, de esta forma, puedo tener muchos distintos para cada tipo de archivo, si creo dentro de esta carpeta una \texttt{tex}, esos archivos \texttt{.snippets} se cargarán cuando esté trabajando con un archivo \texttt{.tex}, y así. En la actualidad todavía no he definido muchos \textit{snippets}, pero de ejemplo puede servir el que tengo en \texttt{UltiSnips/snippets/general.snippets}:
+
+    Ubicado en la zona privada, pues revelar los «snippets» al final revelan la
+    estructura que tienen mis documentos en \LaTeX{} y pueden llevar a romper mi
+    anonimato.
+
+    La documentación sobre cómo usar UltiSnips se encuentra ejecutando \texttt{:help UltiSnips}, y es bastante completa.
+\end{document}
+

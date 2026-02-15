@@ -1,0 +1,239 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{float}
+\usepackage{minted}
+\usepackage[margin=2cm]{geometry}
+
+\title{Mini guía de LaTeX con consejos útiles}
+\author{Felipe Muñoz Casasola}
+\date{26 de junio de 2025}
+
+\begin{document}
+   \maketitle
+   \clearpage
+   \tableofcontents
+   \clearpage
+   
+   \section{Dónde empezar}
+   Revisa documentos anteriores, recuerda que todo documento en LaTeX tiene la siguiente estructura:
+
+   \begin{verbatim}
+       \documentclass{una clase de documento, en general es
+       article}
+       \usepackage[spanish]{babel} % Para traducir todo
+       al español
+       \begin{document}
+           El contenido del documento.
+       \end{document}
+   \end{verbatim}
+
+   A continuación se presenta una lista de los paquetes que suelo usar y su explicación. Por restricciones de \LaTeX{} me voy a referir a los comandos sin usar la barra \textbackslash.
+
+   \begin{table}[ht]
+	   \begin{tabularx}{\linewidth}{cX}
+		   \midrule
+		   Nombre       &       Función \\
+		   \midrule
+		   \texttt{geometry}    &       Modificar las configuraciones de la página, con las opciones     del paquete (\texttt{usepackage[opciones]{geometry}}), más información \href{https://latex-mat-ugr.git    hub.io/Curso-LaTeX/Personalizacion/about.html\#dise\%C3\%B1o-de-p\%C3\%A1gina}{aquí}, \href{https://we    b.archive.org/web/20250626210047/https://latex-mat-ugr.github.io/Curso-LaTeX/Personalizacion/about.ht    ml}{archivado}      \\
+		   \texttt{array}       &       Mejora los entornos \texttt{tabular} y \texttt{array}, recome    ndable siempre que se use alguno de estos.	\\
+		   \texttt{sectsty}	&	Permite cambiar las fuentes de las secciones y títulos del documento (por separado)	\\
+		   \texttt{ulem}	&	Permite subrayar y tachar texto de distintas formas	\\
+		   \texttt{float}	&	Provee la opción \texttt{[H]} para las figuras, para que se pongan exactamente donde están, mientras que \texttt{[h]} las pone, si puede y lo ve bien. No obstante, es mejor usar \texttt{[h!]} para forzarlo, antes que incluir el paquete	\\
+		   \texttt{graphicx}	&	Sirve para importar imágenes en el documento	\\
+		   \texttt{amsmath}	&	Mejora los entornos matemáticos considerablemente, y el renderizado de las fórmulas	\\
+		   \texttt{pgfplots}	&	Permite la creación de casi todo tipo de gráficos y figuras en \LaTeX{}	\\
+		   \texttt{pdfplotstable}&	Permite la creación de tablas a partir de archivos de datos con columnas separadas por espacios	\\
+		   \texttt{booktabs}	&	Añade algunos comandos para crear tablas más profesionales (\texttt{toprule}, \texttt{midrule}, \texttt{bottomrule}, etc.)	\\
+		   \texttt{rotating}	&	Provee de algunos entornos para rotar fácilmente \texttt{sideways\-table}, \texttt{sidewaysfigure} y algunos comandos para rotar cualquier gráfico.	\\
+		   \texttt{diagbox}	&	Sirve para poner casillas diagonales en tablas (para mapas de Karnaugh o tablas de estadística de dos variables)	\\
+		   \texttt{microtype}	&	Mejora el espacio de las fuentes, mejoras minúsculas, pero que mejoran la calidad de la fuente, también permite la personalización, pero es complejo	\\
+		   \texttt{cancel}	&	Sirve para poder tachar números con los comandos \texttt{cancel} y \texttt{cancelto}	\\
+		   \texttt{hyperref}	&	Permite la creación de enlaces internos, creación de marcas de página para el pdf y la edición de los metadatos del pdf	\\
+		   \texttt{bookmark}	&	Mejora las marcas de página de \texttt{hyperref}, permitiendo más control y solucionando algunos de sus problemas (solo admite nombres de secciones, subsecciones y subsubsecciones únicos)	\\
+		   \texttt{mathtools}	&	Provee de algunas utilidades importantes para matemáticas, como \texttt{dcases}, que mejora el espaciado del estándar \texttt{cases}	\\
+		   \texttt{tabularx}	&	Añade el entorno \texttt{tabularx} que permite la inclusión de tablas mejoradas que ajustan al texto según una medida, se debe poner \{linewidth\}\{X\} donde las columnas de tipo X son las que se ajustan como máximo a \texttt{linewidth} (hay que añadirle una barra al principio). \\
+		   \midrule
+	   \end{tabularx}
+   \end{table}
+
+   Algunas de las opciones de estos paquetes que uso son:
+
+   \begin{table}[H]
+	   \begin{tabularx}{\linewidth}{cX}
+   	   	   \midrule
+		   Comando	&	Función	\\
+		   \midrule
+		   \texttt{setlength arrayrulewidth 0.4mm}	&	Ajustar el tamaño de las líneas de las tablas	\\
+		   \texttt{renewcommand arraystretch 1.5}	&	Modifica la separación en las tablas	\\
+		   \texttt{bookmarksetup depth=-1}	&	Evita que el paquete \texttt{bookmark} cree marcadores automáticos para el pdf	\\
+		   \texttt{usepackage[usepdftitle] hyperref}	&	Añade al título del pdf el título del documento establecido con \texttt{title}	\\
+		   \midrule
+   	   \end{tabularx}
+   \end{table}
+
+   \clearpage
+   
+   \section{Consejos que debo recordar}
+   \begin{itemize}
+   	   \item Nunca debo usar una tabla (\texttt{tabular}) que no esté dentro de un entorno \texttt{table}, pues ese entorno mejora notablemente la calidad de la tabla.
+	   \item Para las tablas, nunca usaré líneas horizontales, siguiendo las recomendaciones del mantenedor del paquete \texttt{booktabs}. Usaré líneas horizontales del paquete ya mencionado, con el comando \textbackslash \texttt{midrule}.
+	   \item Incluiré \textbf{siempre} los paquetes \texttt{microtype}, \texttt{geometry} (con opciones de formato de página), \texttt{array} (si uso tablas), \texttt{booktabs} (si uso tablas) y \texttt{amsmath} (si uso entornos matemáticos).
+	   \item No abusaré del paquete \texttt{float} para poner \texttt{[H]} a los entornos que lo requieran para no reemplazarse, en su lugar intentaré (primero) arreglarlo con \texttt{[!h]} o \texttt{[!ht]}, el segundo significa que lo ponga arriba (\texttt{t} de top, también puede ser \texttt{l} de left, \texttt{c} de center, o \texttt{r} de right).
+	   \item Usaré siempre el comando \texttt{chktex} en todos los documentos en \LaTeX{} que haga, para verificar que he escrito bien en \LaTeX{}. Uso: \texttt{chktex archivo.tex}.
+	   \item En cuanto tenga duda, consultaré primero el manual oficial de \LaTeX{} de cada paquete, al que se accede usando \texttt{texdoc «Nombre del paquete»}. La información más interesante se encuentra en esos manuales.
+	   \item Puedo consultar un gran catálogo de información desde el navegador abriendo el archivo \texttt{/usr/local/texlive/2025/index.html} o \texttt{/usr/local/\-texlive/2025/doc.html}.
+	   
+	   \item \textbf{Prohibido} usar comandos como \texttt{vspace}, \textbackslash \textbackslash o aquellos que sirvan para manipular el espaciado en \LaTeX{} manualmente, posteriormente provocan más problemas que beneficios y revelan un desconocimiento de \LaTeX{}.
+	   \item Antes de buscar ninguna ayuda en Internet, mirar los archivos que tenga guardados de \LaTeX{} en el ordenador, seguramente tendrán información muy completa y muy útil.
+	   \item Usar el manual de \LaTeX{} que hicieron algunos profesores de la UGR (aunque tiene alguna cosilla mejorable, como lo de las tablas que no lo hacen bien), que se encuentra \href{https://latex-mat-ugr.github.io/Curso-LaTeX/}{aquí}, o el libro de \LaTeX{} que tengo en mi ordenador.
+	   \item La chuleta de los atajos de Vimtex también deberé leerla y tenerla a mano para consultarla y memorizar los atajos. Leer también la chuleta con los «snippets» de UltiSnips, pues son superútiles.
+	   \item En algunos entornos como \texttt{texttt} el texto no se parte en líneas automáticamente, puedo decirle a LaTeX cómo partir el texto usando \verb|\-|, como en \verb|La\-TeX|, donde pondrá un guion para partir la palabra LaTeX si fuera necesario. De esta forma se solucionan los errores \texttt{Underfull hbox} y \texttt{Overfull hbox} más comunes.
+	   \item Para poner una nueva página es mejor usar \verb|\clearpage| porque además de poner una página nueva como \verb|\newpage|, también evita que las figuras (imágenes) aparezcan en la siquiente página. Forzando a que aparezcan antes de la nueva página, asegurando una nueva página limpia.
+   \item El entorno minted debe tener las opciones breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost="" para evitar que muestre los caracteres de retorno de carro, que en caso de querer copiar parte de este texto se copiarían también. Esto además permite que los códigos se ajusten automáticamente para evitar tener que modificarlos para que no se provoquen errores de «overfull hbox». Un ejemplo sería el siguiente:
+	   \begin{minted}[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]{latex}
+begin{minted}[breaklines, breakanywhere, brea    ksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]{systemd}
+	ejemplo
+end{minted}
+	   \end{minted}
+	   
+   \end{itemize}
+
+   \section{Crear notas al pie de página en tablas o entornos matemáticos}
+   Para usar notas al pie de página en una tabla o en un entorno donde el comando \verb|\footnote{Mi nota al pie de página}| no funcione, necesito realizar lo siguiente:
+
+   Donde quiera que aparezca la referencia a la nota (el numerito) pongo \verb|\footnotemark| y donde     quiera poner el texto que va a ir pongo primero
+
+   \verb|\addtocounter{footnote}{-1}| y ya a continuación, más tarde pongo
+
+   \verb|\footnotetext{El texto de la nota al pie}|, a continuación, justo después pongo \verb|\stepcounter{footnote}|.
+
+   \clearpage
+   
+   \section{Uso básico de Vimtex}
+   \subsection{Crear un proyecto}
+
+   Para crear un proyecto en Vimtex, he de crear en una carpeta un archivo que se reconozca como principal. Este archivo, he configurado que sea \texttt{principal.tex}. La importancia, es que de todo el proyecto, este archivo es el único que se compila. De esta forma, si estoy trabajando con archivos aparte y compilo, solamente se compilará el \texttt{principal.tex}, que es el que incluirá o usará los otros archivos. El archivo de configuración donde se encuentra esto es: \texttt{~/.vim/pack/LaTeX/start/vimtex/plugin}, que a día de hoy, tiene el siguiente contenido añadido por mí:
+
+   \begin{verbatim}
+" Inicio de mi configuración
+"
+
+let g:vimtex_compiler_latexmk = {
+        \ 'aux_dir' : 'build/',
+        \}
+
+let g:vimtex_view_general_viewer = 'evince'
+
+let b:vimtex_main = "principal.tex"     " Esto establece
+" el archivo principal por defecto
+
+" Fin de mi configuración
+"
+   \end{verbatim}
+
+   Lo único que hago es establecer que el compilador (\texttt{latexmk}) compile en un directorio \texttt{build} por defecto, poner el visor de pdf como \texttt{evince} (el que uso desde hace mucho tiempo), y establecer el archivo principal en un proyecto como \texttt{principal.tex}.
+
+   Nota, en caso de que quisiera establecer otro archivo principal en un
+   proyecto en específico, solamente tendría que especificarlo creando un
+   archivo (vacío) con el nombre \texttt{nuevo-principal.tex.latexmain} y ya
+   funcionaría. Todos los archivos de \LaTeX{} que estén en subcarpetas y en el
+   mismo directorio, los considerará Vimtex subordinados a ese. Nota: para que
+   funcione  F4, que te lleva en el pdf a la línea que estás señalando en LaTeX,
+   entonces tienes que crear obligatoriamente \texttt{principal.tex.latexmain}.
+   Se podría hacer una modificación en
+   \texttt{~/.vim/ftplugin/tex\_evinceSync.vim}, pero al actualizar el programa
+   se revertiría mi cambio.
+
+   Para más información, puedo consultar en \texttt{:help vimtex-multi-file}, los manuales en general de Vimtex y de UltiSnips están llenos de información, se accede usando \texttt{:help vimtex} y \texttt{:help UltiSnips}.
+
+   \subsection{Trabajar en un archivo}
+	   Para comenzar, una vez creado el archivo \texttt{principal.tex}, una vez listo para compilar, en el modo normal de Vim (dándole a escape cuando estoy en modo inserción escribiendo) hago \texttt{Espacio + l + l}. Hay una chuleta en la carpeta de \LaTeX{} que debo tener a mano siempre que trabaje. Nótese que estos comandos en vim de deben escribir rápido, si tardo cierto tiempo entre escribir una letra y otra, se reinicia y tengo que volver a escribir toda la sentencia \texttt{Espacio + l + l}. Además de los archivos de los snippets abiertos (en \texttt{~/.vim/UltiSnips/}). Falta por crear un archivo de \textit{snippets} para las matemáticas.
+
+	   Si quiero ir de una línea en \LaTeX{} para que me le muestre en el
+	   pdf, puedo usar \texttt{Esc + F4} y en evince me llevará a la línea
+	   que corresponde en el pdf al código en \LaTeX{}.
+
+	   Para cerrar el menú con los errores en \LaTeX{} tengo que darle a \texttt{Esc} + \texttt{Espacio} + \texttt{l} + \texttt{e}.
+
+	   Una vez terminado el \LaTeX{} tengo que darle a \texttt{Esc} + \texttt{Espacio} + \texttt{l} + \texttt{l} para terminar la compilación en modo continuo, y que cuando limpie los archivos, no se vuelvan a generar inmediatamente. Ahora limpio la salida de \LaTeX{}, para ello hago \texttt{Esc} + \texttt{Espacio} + \texttt{l} + \texttt{Shift} + \texttt{c}, esto también borra el pdf de salida, luego primero guardo el pdf donde me haga falta, y luego ejecuto esto.
+
+	   \subsection{Configuración de atajos}
+	   El archivo de configuración que solamente se carga en los archivos \texttt{tex} se encuentra en \texttt{~/.vim/pack/LaTeX/start/vimtex/ftplugin/tex.vim}, que tiene el siguiente contenido añadido por mí. Nótese los útiles atajos para mostrar los números de línea en Vim.
+
+	   \begin{verbatim}
+"
+" Configuración introducida por mí
+"
+
+let maplocalleader = " "        " Establece la tecla
+" <localleader> a usar
+let conceallevel = 2    " Esto es una recomendación del
+" manual para la función de sustituir algunos comandos
+" por texto.
+
+set number
+" Establece que el ancho de una línea debe ser 80, y rompe
+" la línea en el primer espacio si no se cumple.
+set textwidth=80
+" Dibuja una columna en la línea 80 para ver cuál es el
+" límite de caracteres
+set colorcolumn=80
+" Establece que el color de la columna sea azul claro
+highlight ColorColumn ctermbg=lightblue
+
+" Inicio de atajos del teclado personalizados
+
+" Atajo para llamar al que hace lo de synctex, si estoy
+" escribiendo LaTeX y quiero ver en el pdf una zona de
+" lo que estoy escribiendo, entonces pulso <F4> y me
+" lleva en el visualizador de pdf a esa línea que
+" corresponde al LaTeX en el que se encuentra el cursor.
+nmap <F4> :call SVED_Sync()<CR>
+
+" Atajo para desactivar la numeración de las líneas que
+" vienen activadas por defecto
+nmap <F2> :set nonumber<CR>
+
+" Atajo para activar la numeración de las líneas
+nmap <F3> :set number<CR>
+
+" Fin de atajos del teclado personalizados
+
+"
+" Fin de la configuración introducida por mí
+"
+	   \end{verbatim}
+	  
+	   De todos los atajos disponibles recomiendo los que siempre uso en todos los documentos.
+\end{document}

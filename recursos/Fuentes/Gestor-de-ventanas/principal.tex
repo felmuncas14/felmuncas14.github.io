@@ -1,0 +1,397 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{booktabs}
+
+\title{Gestor de ventanas}
+\author{Felipe Muñoz Casasola}
+\date{27 de septiembre de 2025}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    \tableofcontents
+    \clearpage
+    
+    \section{Dónde actualizar y encontrar el gestor de ventanas actual}
+    El gestor de ventanas que utilizo es dwm, un gestor de ventanas simple escrito en C con la capacidad mínima indispensable para hacer las tareas cotidianas. La página web oficial es \href{https://dwm.suckless.org/}{esta}, y desde aquí puedo descargar las siguientes versiones. Los \textit{patches} son los complementos que puedo agregar al gestor de ventanas. No obstante, muchos están desactualizados, por lo que es mejor no usar nunca ninguno.
+
+    También tengo instalado el dmenu, el programa que me permite cuando pulso \texttt{Win} + \texttt{p} ejecutar comandos. También tiene \textit{patches}, pero tampoco son recomendables. En la misma página anterior se puede encontrar un enlace para descargar la última versión de dmenu.
+
+    Para instalar nuevas versiones, debo descargar el zip con el programa, descomprimirlo (el gestor de ventanas se encuentra en la carpeta \texttt{\$HOME/Documentos/Gestión del sistema/Gestor de ventanas/}) y copiar el archivo \texttt{config.h} de la versión anterior a la nueva, que es donde se contienen mis ajustes de colores y de atajos del teclado.
+
+    \section{Configuración del gestor de ventanas}
+    
+    \subsection{Atajos del teclado}
+    \begin{table}[h]
+    	   \begin{tabular}{cc}
+    	   	   \midrule
+		   Atajo	&	Acción	\\
+		   \midrule
+
+		   \texttt{Win} + \texttt{z}	&	Abrir Thunar	\\
+		   \texttt{Win} + \texttt{n}	&	Abrir el navegador Mullvad	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{t}	&	Abrir Tor	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{a}	&	Apagar	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{r}	&	Reiniciar	\\
+		   \texttt{Impr Pant}	&	Hacer captura de pantalla (\texttt{xfce4-screenshooter})	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{l}	&	LibreOffice 25.8	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{c}	&	KeePassXC	\\
+		   \texttt{Win} + \texttt{v}	&	Configurar el volumen	\\
+		   \midrule
+    	   \end{tabular}
+    \end{table}
+
+    \subsection{xinitr}
+    Este es el archivo que se ejecuta al iniciar sesión cuando arranca el sistema. Este archivo debe iniciar dwm. Se encuentra en \texttt{/etc/xdg/dwm/} y tiene el siguiente contenido:
+
+    \begin{verbatim}
+#!/bin/bash
+# Taken from:
+#	https://raw.github.com/kaihendry/Kai-s--HOME/master/.xinitrc
+#
+
+DIRECTORIO_BARRA="/home/usuario/.barra/avd-main"
+
+export GTK_THEME=Graphite-Dark
+
+# Las aplicaciones que utilicen java no funcionan sin la siguiente línea
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+setxkbmap  -model pc105 -layout "es(winkeys)" -option caps:shift -option \
+numpad:future
+
+# Añado LaTeX al PATH
+export PATH=$PATH:/usr/local/texlive/2025/bin/x86_64-linux/:/home/usuario/\
+            .local/bin/
+
+# Establezco el navegador por defecto a Mullvad
+xdg-settings set default-web-browser mullvad-browser.desktop
+
+# Quito el salvapantallas
+xset s off
+
+while true; do
+	$HOME/.barra/barra.sh
+       sleep 5	
+done &
+exec dwm
+    \end{verbatim}
+    
+    Si la variable \texttt{GTK\_THEME} no está puesta, entonces no se activa el modo oscuro por defecto en el sistema, y las aplicaciones detectan que el tema por defecto del sistema es el modo claro. Hay que establecer la distribución del teclado, si no tampoco funciona correctamente.
+
+    \subsection{Barra de estado}
+    Para configurar la barra de estado en dwm hay que crear un script, que provoca que se ponga la barra de estado, las líneas:
+
+    \begin{verbatim}
+while true; do
+        $HOME/.barra/barra.sh
+       sleep 5
+done &
+    \end{verbatim}
+    
+    aseguran que este script se ejecuta cada 5 segundos, actualizando así la barra. Si el tiempo de espera es menor, o no lo hay, la barra no funciona correctamente.
+
+    El contenido de \texttt{\$HOME/.barra/barra.sh} es el siguiente:
+
+    \begin{verbatim}
+porcentaje_memoria=$(echo "scale=2;""100-$(cat /proc/meminfo | grep Mem | \
+                   awk 'NR==3' | cut -d ":" -f 2 | cut -d " " -f 4)/$(cat \
+		   /proc/meminfo | grep Mem | awk 'NR==1' | cut -d ":" -f 2\
+		   | cut -d " " -f 8)*100" | bc)
+porcentaje_cpu=$(ps --no-headers -A -o %cpu | awk '{cpu = cpu + $1} END \
+               {printf "%3.0f", cpu}')
+	
+# KiB recibidos.
+recibidos1=$(cat /proc/net/dev | grep wlp11s0)
+recibidos2=${recibidos1:8}
+recibidosi=$(echo "scale=10;""${recibidos2:0:-107}""/1024" | bc)
+
+sleep 2
+
+recibidos3=$(cat /proc/net/dev | grep wlp11s0)
+recibidos4=${recibidos3:8}
+recibidosf=$(echo "scale=10;""${recibidos4:0:-107}""/1024" | bc)
+
+recibidos=$(echo "scale=3;""$recibidosf-$recibidosi" | bc)
+
+# Kib transmitidos.
+transmitidos1=$recibidos1
+transmitidos2=${transmitidos1:68}
+transmitidosi=$(echo "scale=10;""${transmitidos2:0:-48}""/1024" | bc)
+
+transmitidos2=$recibidos3
+transmitidos3=${transmitidos2:68}
+transmitidosf=$(echo "scale=10;""${transmitidos3:0:-48}""/1024" | bc)
+
+transmitidos=$(echo "scale=3;""$transmitidosf-$transmitidosi" | bc)
+
+# Volumen.
+volumen=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" \
+        | cut -d "/" -f 2 | tr -d '[:space:]' | cut -d "%" -f 1)
+icono="U+F028"
+
+if [ $volumen -gt 50 ]; then
+	icono="U+F027"
+fi
+
+# Vale «sí» si está mudo el altavoz y «no» si no lo está.
+mudo=$(pactl get-sink-mute @DEFAULT_SINK@ | cut -d " " -f 2)
+
+if [ "$mudo" = "sí" ]; then
+	icono="U+EEE8"
+fi
+
+# Fecha
+fecha=$(date "+%A %d de %B %H:%M")
+
+# Separador
+separador=" :: "
+
+resultado="U+EFC5 $(echo $porcentaje_memoria | cut -d "." -f 1)%\
+          "$separador"U+F4BC $porcentaje_cpu%"$separador"U+F409 \
+	  $recibidos kiB/s U+F40A $transmitidos kiB/s"$separador"\
+	  $volumen% $icono "$separador""$fecha""
+
+xsetroot -name "$resultado"
+
+sleep 2
+    \end{verbatim}
+
+    Nota: los iconos se han cambiado por sus códigos Unicode, porque \LaTeX{} no
+    me permite ponerlos, busca alguna guía en la página de las NerdFonts sobre
+    cómo introducirlos en vim.
+
+    Como se puede ver, el comando \texttt{xsetroot} es el que establece el texto de la barra. Lo de esperar otros dos segundos es para evitar  que la barra se vea mal. Para que funcione la barra hace falta la fuente 0xProtoNerdFont-Regular instalada, pues los iconos que usa son de esa fuente. Actualmente, esa fuente se encuentra en \texttt{\$HOME/.fonts/0xProtoNerdFont-Regular.ttf}.
+    
+    \subsection{Configuración de dwm}
+    La configuración de dwm se encuentra en el archivo \texttt{\$HOME/Documentos/Gestión del sistema/\-Gestor de ventanas/dwm-6.6/config.h} que tiene a día de hoy el siguiente contenido:
+
+    \begin{verbatim}
+/* See LICENSE file for copyright and license details. */
+
+/* appearance */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int snap      = 32;       /* snap pixel */
+static const int showbar            = 1;        /* 0 means no bar */
+static const int topbar             = 1;        /* 0 means bottom bar */
+static const char *fonts[]          = { "0xProtoNerdFont-Regular:size=10" };
+static const char dmenufont[]       = "0xProtoNerdFont-Regular:size=10";
+static const char col_gray1[]       = "#222222";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#005577";
+static const char col_nar[]         = "#ff9d00";
+static const char col_ver[]         = "#00ff15";
+static const char col_gris[]        = "#b2b2b2";
+static const char col_mor[]         = "#9154ff";
+static const char col_roj[]         = "#ff0000";
+static const char col_negro[]       = "#000000";
+static const char *colors[][8]      = {
+	/*               fg         bg         border   */
+	{ col_gray3, col_cyan, col_cyan },
+	{ col_gray4, col_cyan,  col_cyan  },
+	{ col_nar, col_cyan, col_cyan },
+	{ col_ver, col_cyan, col_cyan },
+	{ col_gris, col_cyan, col_cyan },
+	{ col_mor, col_cyan, col_cyan },
+	{ col_roj, col_cyan, col_cyan },
+	{ col_negro, col_cyan, col_cyan },
+};
+
+
+/* tagging */
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+static const Rule rules[] = {
+	/* xprop(1):
+	 *	WM_CLASS(STRING) = instance, class
+	 *	WM_NAME(STRING) = title
+	 */
+	/* class      instance    title       tags mask     isfloating   monitor */
+	{ "Workrave","workrave","Workrave",     1 << 8,            0,           -1 },
+};
+
+/* layout(s) */
+static const float mfact     = 0.65; /* factor of master area size [0.05..0.95] */
+static const int nmaster     = 1;    /* number of clients in master area */
+static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+
+static const Layout layouts[] = {
+	/* symbol     arrange function */
+	{ "T",      tile },    /* first entry is default */
+	{ "F",      NULL },    /* no layout function means floating behavior */
+	{ "[M]",      monocle },
+};
+
+/* key definitions */
+#define MODKEY Mod4Mask
+#define TAGKEYS(KEY,TAG) \
+	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+
+/* helper for spawning shell commands in the pre dwm-5.0 fashion */
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+
+/* commands */
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[] =  {
+	"dmenu_run", "-m", dmenumon, "-i", "-fn", dmenufont, "-nb", col_gray1,
+	"-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL
+};
+static const char *termcmd[]          = { "x-terminal-emulator", NULL };
+static const char *gestordearchivos[] = { "thunar", NULL };
+static const char *navegador[]        = { "mullvad-browser", NULL };
+static const char *tor[]              = { "/opt/Tor./Browser/start-tor-browser", "--detach", NULL };
+static const char *apagar[]           = {"/sbin/./poweroff", NULL};
+static const char *reiniciar[]        = {"/sbin/./reboot", NULL};
+static const char *capturar[]         = {"xfce4-screenshooter", NULL};
+static const char *documentos[]       = {"libreoffice25.8", NULL};
+static const char *contrasenias[]     = {
+	"/home/usuario/Escritorio/./KeePassXC-2.7.9-x86_64.AppImage",
+	NULL
+};
+static const char *volumen[]          = {"pavucontrol", NULL};
+
+static const Key keys[] = {
+	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY,             		XK_c,      killclient,     {0} },
+	/*		Inicio de comandos introducidos por mí.				*/
+
+	{ MODKEY,                       XK_z,      spawn,     {.v = gestordearchivos} },
+	{ MODKEY,			XK_n,	   spawn,     {.v = navegador}},
+	{ MODKEY|ShiftMask,		XK_t,	   spawn,     {.v = tor}},
+	{ MODKEY|ShiftMask,             XK_a,      spawn,     {.v = apagar} },
+	{ MODKEY|ShiftMask,             XK_r,      spawn,     {.v = reiniciar} },
+	{ 0,                       XK_Print,  spawn,     {.v = capturar} },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,     {.v = documentos} },
+	{ MODKEY|ShiftMask,             XK_c,      spawn,     {.v = contrasenias} },
+	{ MODKEY,                       XK_v,      spawn,     {.v = volumen}},
+
+	/*              Fin de comandos introducidos por mí.                         	*/
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	TAGKEYS(                        XK_1,                      0)
+	TAGKEYS(                        XK_2,                      1)
+	TAGKEYS(                        XK_3,                      2)
+	TAGKEYS(                        XK_4,                      3)
+	TAGKEYS(                        XK_5,                      4)
+	TAGKEYS(                        XK_6,                      5)
+	TAGKEYS(                        XK_7,                      6)
+	TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+};
+
+/* button definitions */
+/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+static const Button buttons[] = {
+	/* click                event mask      button          function        argument */
+	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkTagBar,            0,              Button1,        view,           {0} },
+	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
+	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+};
+    \end{verbatim}
+    
+    Una ayuda útil sobre la configuración de dwm es la wiki de ArchLinux. Para establecer los cambios, una vez modificado el archivo de configuración, hay que ejecutar los siguientes comandos en el mismo directorio: \texttt{make} y \texttt{sudo make install}, lo mismo aplica para los cambios en dmenu.
+
+    \subsection{Configuración de dmenu}
+    El archivo de configuración de dmenu se encuentra en \texttt{\$HOME/Documentos/Gestión del sistema/Gestor de ventanas/dmenu-5.4/config.h} que tiene el siguiente contenido:
+
+    \begin{verbatim}
+/* See LICENSE file for copyright and license details. */
+/* Default settings; can be overriden by command line. */
+
+static int topbar = 1; /* -b  option; if 0, dmenu appears at bottom     */
+/* -fn option overrides fonts[0]; default X11 font or font set */
+static const char *fonts[] = {
+	"monospace:size=10"
+};
+/* -p  option; prompt to the left of input field */
+static const char *prompt      = NULL;
+static const char *colors[SchemeLast][2] = {
+	/*     fg         bg       */
+	[SchemeNorm] = { "#bbbbbb", "#222222" },
+	[SchemeSel] = { "#eeeeee", "#005577" },
+	[SchemeOut] = { "#000000", "#00ffff" },
+};
+/* -l option; if nonzero, dmenu uses vertical list with given number of lines */
+static unsigned int lines      = 0;
+
+/*
+ * Characters not considered part of a word while deleting words
+ * for example: " /?\"&[]"
+ */
+static const char worddelimiters[] = " ";
+    \end{verbatim}
+    
+    \subsection{Emulador de terminal}
+    Al principio usaba otra terminal del mismo grupo de desarrolladores de dmw y dmenu, llamada st, pero aparte de que todavía no estaba en la versión 1.0, era incómoda para trabajar y después de alguna actualización del sistema dejó de funcionar, luego ahora mismo uso \texttt{Alacritty}.
+
+    \subsection{Listar DWM en la lista de posibles gestores de escritorio a
+    ejecutar}
+    Tengo que copiar el archivo \texttt{dwm.desktop} en la carpeta
+    \texttt{/usr/share/xsessions}.
+    
+\end{document}

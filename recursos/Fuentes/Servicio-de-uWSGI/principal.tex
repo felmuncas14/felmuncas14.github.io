@@ -1,0 +1,146 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+
+\title{Archivo de servicio de uWSGI}
+\author{Felipe Muñoz Casasola}
+\date{27 de septiembre de 2025}
+
+\begin{document}
+
+\maketitle
+\clearpage
+
+\section{Archivo de servicio del sistema}
+Mi instalación de uWSGI no traía un archivo de servicio, utiliza un generador de \texttt{systemd} que en futuras versiones se va a eliminar, por eso he tenido que crear manualmente este servicio. \href{https://uwsgi.readthedocs.io/en/latest/Systemd.html}{Aquí} se encuentra la página de donde saqué la información para crear el servicio. Y está archivada \href{https://web.archive.org/web/20250927100911/https://uwsgi.readthedocs.io/en/latest/Systemd.html}{aquí}. Hay una breve modificación porque el archivo \texttt{emperor.ini} no lo tengo. La versión que tengo en \texttt{/etc/systemd/system/uwsgi.service} es la siguiente:
+
+\begin{verbatim}
+[Unit]
+Description=uWSGI server
+
+[Service]
+ExecStart=/bin/uwsgi --ini /etc/uwsgi/searxng.ini
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+\end{verbatim}
+
+\section{Archivo \texttt{searxng.ini}}
+El archivo \texttt{/etc/uwsgi/searxng.ini} estaba vacío tras la instalación que hice en su día de SearxNG, que he tenido que rellenar siguiendo las instrucciones de \href{https://docs.searxng.org/admin/installation-uwsgi.html}{la guía oficial de SearxNG}, archivado \href{https://web.archive.org/web/20250927123518/https://docs.searxng.org/admin/installation-uwsgi.html}{aquí}, con el siguiente contenido:
+
+\begin{verbatim}
+# -*- mode: conf; coding: utf-8  -*-
+[uwsgi]
+
+# uWSGI core
+# ----------
+#
+# https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core
+
+# Who will run the code / Hint: in emperor-tyrant mode uid & gid setting will be
+# ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).
+#
+# [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting
+#
+uid = searxng
+gid = searxng
+
+# set (python) default encoding UTF-8
+env = LANG=C.UTF-8
+env = LANGUAGE=C.UTF-8
+env = LC_ALL=C.UTF-8
+
+# chdir to specified directory before apps loading
+chdir = /usr/local/searxng/searxng-src/searx
+
+# SearXNG configuration (settings.yml)
+env = SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
+
+# disable logging for privacy
+disable-logging = true
+
+# The right granted on the created socket
+chmod-socket = 666
+
+# Plugin to use and interpreter config
+single-interpreter = true
+
+# enable master process
+master = true
+
+# load apps in each worker instead of the master
+lazy-apps = true
+
+# load uWSGI plugins
+plugin = python3,http
+
+# By default the Python plugin does not initialize the GIL.  This means your
+# app-generated threads will not run.  If you need threads, remember to enable
+# them with enable-threads.  Running uWSGI in multithreading mode (with the
+# threads options) will automatically enable threading support. This *strange*
+# default behaviour is for performance reasons.
+enable-threads = true
+
+# Number of workers (usually CPU count)
+workers = %k
+threads = 4
+
+# plugin: python
+# --------------
+#
+# https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python
+
+# load a WSGI module
+module = searx.webapp
+
+# set PYTHONHOME/virtualenv
+virtualenv = /usr/local/searxng/searx-pyenv
+
+# add directory (or glob) to pythonpath
+pythonpath = /usr/local/searxng/searxng-src
+
+
+# speak to upstream
+# -----------------
+
+socket = /usr/local/searxng/run/socket
+buffer-size = 8192
+
+offload-threads = %k
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,85 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{microtype}
+
+\title{Gestión de la página web}
+\author{Felipe Muñoz Casasola}
+\date{13 de febrero de 2026}
+
+\begin{document}
+    Estoy siguiendo las instrucciones de
+    \href{https://mullvad.net/en/help/how-blog-anonymously}{https://mullvad.net/en/help/how-blog-anonymously},
+    archivado
+    \href{https://web.archive.org/web/20260102025718/https://mullvad.net/en/help/how-blog-anonymously}{aquí}.
+    Voy a usar una máquina virtual llamada Página-web que tiene por sistema
+    operativo Ubuntu. La contraseña del único usuario que hay es el mismo
+    nombre de usuario (felmuncas) . Hay que falsificar los datos que se le den
+    al sistema operativo.
+
+    Siempre que vaya a escribir algún documento que pueda ser público lo haré a
+    través de este sistema operativo, donde utilizaré una instalación local de
+    \LaTeX{}. De esta forma evito que se pueda reconocer el estilo de
+    indentación u otro estilo que tenga personalizado en mi configuración que
+    sea reconocible. Tampoco tengo en público la configuración de los «snippets»
+    de VimTex, pues esto al final refleja la estructura de todos los documentos
+    de \LaTeX{} que hago, y si luego publico por otro lado documentos en
+    \LaTeX{} con la misma estructura se me puede identificar.
+
+    También tendré activada la VPN de Proton, y programaré en \LaTeX{} en
+    Codium (para evitar la tentación, si alguna vez se me olvida, de
+    usar vimtex copiando la configuración que he preferido mantener en privado).
+
+    La idea es que los documentos PDF finales sean compilados por la máquina virtual.
+    Pero en un futuro (tengo que arreglarlo) deberé incrustar los archivos de configuración
+    de mi ordenador con minted, de forma que se cargarán de mi ordenador en los
+    documentos de \LaTeX{} en tiempo de ejecución. Para esto parece ser que
+    actualmente \LaTeX{} usa una carpeta \texttt{\_minted}, que parece que la
+    reutiliza el compilador cuando compilo a través de la máquina virtual.
+    Por tanto, deberé primero compilar (usando el \texttt{Makefile} del
+    proyecto) en mi ordenador principal, para que se creen las carpetas
+    \texttt{\_minted} con los archivos de configuración incrustados. Y que
+    entonces en la máquina virtual al compilar se recuperen esos textos.
+
+    Por tanto, para actualizar la página web, tengo que modificarla en la
+    máquina virtual. Posteriormente llevármela a mi ordenador principal,
+    ejecutar make, volvérmelo a llevar a la máquina virtual y una vez allí
+    hacer \texttt{make pre}, para observar cómo quedaría la página con los
+    nuevos cambios. Y una vez comprobado que funciona bien, hacer
+    \texttt{make pub} para publicar los cambios recompilando primero.21
+    Espero que con esto se puedan aprovechar los archivos de \texttt{minted}
+    y no me dé errores de compilación.
+
+    Tampoco debo acceder nunca a mí página web desde fuera de la máquina
+    virtual para que no se me pueda relacionar en absoluto. Si tuviera que
+    consultar las guías que guardo, simplemente uso el USB en el que se están
+    guardando. Pues como tiene adaptador de USB tipo C también lo puedo
+    conectar al teléfono si me hiciera falta.
+\end{document}

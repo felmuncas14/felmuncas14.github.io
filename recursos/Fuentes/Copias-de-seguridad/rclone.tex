@@ -1,0 +1,68 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+    \section{Configuración de Rclone}
+    \subsection{Descripción}
+    En la instalación actual de \texttt{rclone} en mi sistema, hay activadas dos sincronizaciones, una de la carpeta \texttt{\$HOME/Documentos/} y otra para el escritorio. Se sincronizan cada una a cuentas distintas de MEGA, que me ofrece los 20 Gb que necesito. Antes de subirse, todos los archivos son encriptados con una contraseña y un salteado, que se encuentran en mi base de datos de contraseñas (archivo AppImage de KeePassXC en \texttt{\$HOME/Escritorio}), que también se encuentra en el escritorio.
+
+    \subsection{Archivos de inicio}
+    Los dos archivos que inician automáticamente este sistema y lo mantienen funcionando son: \texttt{/etc/systemd/system/rclone.service} y \texttt{/etc/systemd/system/rclone\_e.service} con el siguiente contenido:
+
+   \begin{minted}[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]{systemd}
+[Unit]
+After=multi-user.target
+Description=rclone
+
+[Service]
+User=usuario
+ExecStart=/usr/bin/rclone sync --metadata /home/usuario/Documentos/ Encriptar_documentos:
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target       
+   \end{minted}
+    
+    Y el archivo para la sincronización del escritorio:
+
+    \begin{minted}[breaklines=true,breaksymbolleft=""]{systemd}
+[Unit]
+After=multi-user.target
+Description=rclone
+
+[Service]
+User=usuario
+ExecStart=/usr/bin/rclone sync --metadata /home/usuario/Escritorio/ Encriptar\_escritorio:
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+    \end{minted}
+
+    \subsection{Uso}
+    Para iniciar una interfaz web en el navegador, se puede usar el comando \texttt{rclone rcd --rc-web-gui}, en caso de pérdida, se debe intentar consultar una forma de desencriptar los archivos manualmente sin rclone, aunque por el momento no he encontrado ninguna, la forma más cómoda es restaurar el archivo de configuración.
+
+    \subsection{Mantenimiento}
+    Para actualizar la instancia, se puede ejecutar el comando \texttt{sudo rclone selfupdate}. Nótese que usa \texttt{go} para funcionar, luego no debo desinstalar nada de \texttt{go}. La configuración de \texttt{rclone} se encuentra en \texttt{\$HOME/.config/rclone/rclone.conf}, que tiene el siguiente contenido:
+
