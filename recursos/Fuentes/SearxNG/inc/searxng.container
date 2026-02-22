@@ -1,0 +1,46 @@
+# Modificado por mí, sacado de la configuración de un usuario de GitHub
+# del que no sé el nombre. Modificado gracias a la respuesta del usuario
+# Jack O'Connor en serverfault.com/questions/794922/how-to-use-the-home-environment-variable-in-systemd-service-files
+[Unit]
+Description=SearXNG Privacy-Respecting Metasearch Engine
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Actualizar la fecha del commit abajo para actualizar
+# puede provocar errores, que se guardan en journalctl.
+# Pues al actualizar es posible que algunos motores de búsqueda ya no
+# funcionen y haya que desactivarlos o incluso marcarlos como «inactive»
+# en el archivo de configuración en .config/searxng/settings.yml
+Image=docker.io/searxng/searxng:2026.2.20-93ac6ceb3
+ContainerName=searxng
+
+# Port mapping - change 8888 to your desired port
+PublishPort=8888:8080
+
+# Mount the settings directory (lives alongside this quadlet file)
+# User mode:   ~/.config/containers/systemd/searxng
+# System mode: /etc/containers/systemd/searxng
+Volume=%h/.config/searxng/:/etc/searxng
+
+# Environment variables
+# IMPORTANT: Replace this secret with output of: openssl rand -hex 32
+Environment=SEARXNG_SECRET=e51e9202f17e96c018d8e24947444611ead56441d1f56b3ce0f3b729c4ec0233
+Environment=SEARXNG_BASE_URL=http://localhost:8888
+
+# Security - drop all capabilities and add only needed ones
+#DropCapability=ALL
+#AddCapability=CHOWN SETGID SETUID
+
+# Auto-update
+AutoUpdate=registry
+
+# Logging
+LogDriver=journald
+
+[Service]
+Restart=on-success
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,3 @@
+$HOME/.vim/pack/LaTeX/start/vimtex/plugin/vimtex.vim
+$HOME/.vim/pack/LaTeX/start/vimtex/ftplugin/tex.vim
+$HOME/.vim/pack/Snippets/start/ultisnips/ftplugin/snippets.vim

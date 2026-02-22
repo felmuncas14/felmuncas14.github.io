@@ -1,0 +1,2 @@
+$HOME/.config/containers/systemd/searxng.container
+$HOME/.config/searxng/settings.yml

@@ -1,0 +1,34 @@
+#!/bin/bash
+# Taken from:
+#	https://raw.github.com/kaihendry/Kai-s--HOME/master/.xinitrc
+#
+
+export GTK_THEME=Graphite-Dark
+export QT_QPA_PLATFORMTHEME=gtk3
+
+# Las aplicaciones que utilicen java no funcionan sin la siguiente línea
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+setxkbmap  -model pc105 -layout "es(winkeys)" -option caps:shift -option numpad:future
+
+# Establezco el navegador por defecto a Mullvad
+xdg-settings set default-web-browser mullvad-browser.desktop
+# Establezco el visor de PDF por defecto
+xdg-mime default qpdfview application/pdf
+
+# Quito el salvapantallas
+xset s off
+
+# Inicio el agente de autenticación de LXQt
+lxqt-policykit-agent &
+
+# Para que lf reconozca a vim como el editor
+export EDITOR=vim
+
+while true; do
+	$HOME/.barra/barra.sh
+       sleep 5	
+done &
+feh --bg-scale "$HOME/Imágenes/Fondo.png"
+#exec dbus-launch --sh-syntax --exit-with-session dwm
+exec dwm

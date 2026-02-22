@@ -34,7 +34,7 @@
 
 \title{Copias de seguridad}
 \author{Felipe Muñoz Casasola}
-\date{5 de octubre de 2025}
+\date{5 de octubre de 2025; revisado el 21 de febrero de 2026}
 
 \begin{document}
     \maketitle
@@ -43,11 +43,9 @@
     \clearpage
 
     \input{rclone.tex}
-
-    \clearpage
     
     \section{Copia de seguridad en el disco duro con \texttt{rsync}}
-    En la carpeta \texttt{/home/usuario/Documentos/Gestión\- del sistema/Copias de seguridad/}
+    En la carpeta \texttt{$\sim$/Documentos/Gestión\- del sistema/Copias de seguridad/}
     se encuentran unos guiones que crean una copia de seguridad en mi disco
     duro externo de las carpetas del escritorio, las imágenes y los documentos
     es una breve modificación de un guion sacado de la wiki de Archlinux, lo
@@ -58,13 +56,23 @@
     todos los archivos que no hayan sido modificados en las copias de seguridad
     siguientes también se eliminarán.
 
+    Los guiones aparecen a continuación, primero el de los documentos, luego
+    el del escritorio y luego el de las imágenes:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/Copia de seguridad de documentos.sh}
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/Copia de seguridad de escritorio.sh}
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/Copia de seguridad de imágenes.sh}
+
     El enlace de la wiki de Arch es \href{https://wiki.archlinux.org/title/Rsync}{este}
     que está archivado \href{https://web.archive.org/web/20251005105853/https://wiki.archlinux.org/title/Rsync}{aquí}.
 
     Como están guardados de forma fácil, en caso de tener que restaurarla
     es simplemente copiar los archivos que quiera.
-
-    \clearpage
     
     \section{Copia de seguridad completa con Rescuezilla}
     Para iniciar este proceso tengo que arrancar con el usb con una etiqueta

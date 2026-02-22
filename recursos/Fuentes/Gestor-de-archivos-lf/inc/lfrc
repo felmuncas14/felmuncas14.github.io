@@ -1,0 +1,163 @@
+# Modificado a partir del ejemplo del repositorio de lf. Algunas modificaciones
+# son inspiradas por Eric Murphy
+
+###############################################################################
+# Opciones de configuración						      #
+###############################################################################
+
+# interpreter for shell commands
+set shell sh
+
+# set '-eu' options for shell commands
+# These options are used to have safer shell commands. Option '-e' is used to
+# exit on error and option '-u' is used to give error for unset variables.
+# Option '-f' disables pathname expansion which can be useful when $f, $fs, and
+# $fx variables contain names with '*' or '?' characters. However, this option
+# is used selectively within individual commands as it can be limiting at
+# times.
+set shellopts '-eu'
+
+# set internal field separator (IFS) to "\n" for shell commands
+# This is useful to automatically split file names in $fs and $fx properly
+# since default file separator used in these variables (i.e. 'filesep' option)
+# is newline. You need to consider the values of these options and create your
+# commands accordingly.
+set ifs "\n"
+
+# leave some space at the top and the bottom of the screen
+set scrolloff 10
+
+# Use the `dim` attribute instead of underline for the cursor in the preview pane
+set cursorpreviewfmt "\033[7;2m"
+
+# Mostrar la fecha de los archivos
+set info size:time:atime
+
+# Habilitar el ratón
+set mouse true
+
+# Habilitar los iconos
+set icons true
+
+# Modificar cómo se crean archivos duplicados. %b es el nombre del archivo sin
+# la extensión, %n el número de duplicados y %e la extensión. Se puede usar
+# %f para obtener el nombre completo del archivo (con la extensión).
+set dupfilefmt "%b-%n.%e"
+
+set sortby "name"
+
+###############################################################################
+# Comandos adicionales (para ver el resto predefinidos consultar el manual)   #
+###############################################################################
+
+# define a custom 'open' command
+# This command is called when current file is not a directory. You may want to
+# use either file extensions and/or mime types here. Below uses an editor for
+# text files and a file opener for the rest.
+cmd open &{{
+    case $(file --mime-type -Lb $f) in
+        text/*) lf -remote "send $id \$$EDITOR \$fx";;
+        *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}
+
+
+# define a custom 'rename' command without prompt for overwrite
+# cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+# map r push :rename<space>
+
+# make sure trash folder exists
+# %mkdir -p ~/.trash
+
+# move current file or selected files to trash folder
+# (also see 'man mv' for backup/overwrite options)
+cmd trash %set -f; mv -t ~/.local/share/Trash/files $fx
+
+# define a custom 'delete' command
+ cmd delete ${{
+     set -f
+     printf "$fx\n"
+     printf "delete? [y/N] "
+     read ans
+     [ "$ans" = "y" ] && rm -rf $fx
+ }}
+
+
+
+# extract the current file with the right command
+# (xkcd link: https://xkcd.com/1168/)
+cmd extract ${{
+    set -f
+    case $f in
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
+        *.tar.gz|*.tgz) tar xzvf $f;;
+        *.tar.xz|*.txz) tar xJvf $f;;
+        *.zip) unzip $f;;
+        *.rar) unrar x $f;;
+        *.7z) 7z x $f;;
+    esac
+}}
+
+# compress current file or selected files with tar and gunzip
+cmd tar ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    tar czf $1.tar.gz $1
+    rm -rf $1
+}}
+
+# compress current file or selected files with zip
+cmd zip ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1.zip $1
+    rm -rf $1
+}}
+
+###############################################################################
+# Atajos del teclado							      #
+###############################################################################
+
+# use enter for shell commands
+map <enter> shell
+
+# show the result of execution of previous commands
+map ñ !true
+
+# execute current file (must be executable)
+map x $$f
+map X !$f
+
+# dedicated keys for file opener actions
+map a &mimeopen $f
+map A $mimeopen --ask $f
+
+# mkdir command. See wiki if you want it to select created dir
+map d :push %mkdir<space>
+
+# use '<delete>' key for either 'trash' or 'delete' command
+map <delete> trash
+# Para directorios no funcionará la papelera posiblemente
+map <backspace> delete
+# map <delete> delete
+map E extract
+
+# El nombre «comprimidos» es el nombre del archivo tar a crear (sin la
+# extensión). Por defecto se comprime con gz, pero se puede cambiar
+# modificando el comando tar arriba.
+map Ct tar comprimidos
+map Cz zip comprimidos
+map Co cut
+
+# Desestablezco el atajo i
+map i
+map id cd ~/Documentos
+map ic cd ~/Escritorio/Compartir
+map ii cd ~/Imágenes
+map it cd /tmp
+map iu cd /media/
+map im cd ~/Descargas
+
+map m set hidden!

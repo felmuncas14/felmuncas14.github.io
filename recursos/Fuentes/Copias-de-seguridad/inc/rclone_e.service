@@ -1,0 +1,10 @@
+[Unit]
+After=multi-user.target
+Description=rclone
+
+[Service]
+ExecStart=/usr/bin/rclone sync --metadata $HOME/Escritorio/ Encriptar_escritorio:
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

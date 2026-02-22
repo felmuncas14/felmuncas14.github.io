@@ -37,7 +37,7 @@
 
 \title{Mini guía de LaTeX con consejos útiles}
 \author{Felipe Muñoz Casasola}
-\date{26 de junio de 2025}
+\date{26 de junio de 2025; revisado el 21 de febrero de 2026}
 
 \begin{document}
    \maketitle
@@ -143,37 +143,14 @@ end{minted}
    \section{Uso básico de Vimtex}
    \subsection{Crear un proyecto}
 
-   Para crear un proyecto en Vimtex, he de crear en una carpeta un archivo que se reconozca como principal. Este archivo, he configurado que sea \texttt{principal.tex}. La importancia, es que de todo el proyecto, este archivo es el único que se compila. De esta forma, si estoy trabajando con archivos aparte y compilo, solamente se compilará el \texttt{principal.tex}, que es el que incluirá o usará los otros archivos. El archivo de configuración donde se encuentra esto es: \texttt{~/.vim/pack/LaTeX/start/vimtex/plugin}, que a día de hoy, tiene el siguiente contenido añadido por mí:
-
-   \begin{verbatim}
-" Inicio de mi configuración
-"
-
-let g:vimtex_compiler_latexmk = {
-        \ 'aux_dir' : 'build/',
-        \}
-
-let g:vimtex_view_general_viewer = 'evince'
-
-let b:vimtex_main = "principal.tex"     " Esto establece
-" el archivo principal por defecto
-
-" Fin de mi configuración
-"
-   \end{verbatim}
-
-   Lo único que hago es establecer que el compilador (\texttt{latexmk}) compile en un directorio \texttt{build} por defecto, poner el visor de pdf como \texttt{evince} (el que uso desde hace mucho tiempo), y establecer el archivo principal en un proyecto como \texttt{principal.tex}.
+   Para crear un proyecto en Vimtex, he de crear en una carpeta un archivo que se reconozca como principal.
+   Este archivo, he configurado que sea \texttt{principal.tex}. La importancia, es que de todo el proyecto, este archivo es el único que se compila. De esta forma, si estoy trabajando con archivos aparte y compilo, solamente se compilará el \texttt{principal.tex}, que es el que incluirá o usará los otros archivos.
 
    Nota, en caso de que quisiera establecer otro archivo principal en un
    proyecto en específico, solamente tendría que especificarlo creando un
    archivo (vacío) con el nombre \texttt{nuevo-principal.tex.latexmain} y ya
    funcionaría. Todos los archivos de \LaTeX{} que estén en subcarpetas y en el
-   mismo directorio, los considerará Vimtex subordinados a ese. Nota: para que
-   funcione  F4, que te lleva en el pdf a la línea que estás señalando en LaTeX,
-   entonces tienes que crear obligatoriamente \texttt{principal.tex.latexmain}.
-   Se podría hacer una modificación en
-   \texttt{~/.vim/ftplugin/tex\_evinceSync.vim}, pero al actualizar el programa
-   se revertiría mi cambio.
+   mismo directorio, los considerará Vimtex subordinados a ese.
 
    Para más información, puedo consultar en \texttt{:help vimtex-multi-file}, los manuales en general de Vimtex y de UltiSnips están llenos de información, se accede usando \texttt{:help vimtex} y \texttt{:help UltiSnips}.
 
@@ -189,51 +166,10 @@ let b:vimtex_main = "principal.tex"     " Esto establece
 	   Una vez terminado el \LaTeX{} tengo que darle a \texttt{Esc} + \texttt{Espacio} + \texttt{l} + \texttt{l} para terminar la compilación en modo continuo, y que cuando limpie los archivos, no se vuelvan a generar inmediatamente. Ahora limpio la salida de \LaTeX{}, para ello hago \texttt{Esc} + \texttt{Espacio} + \texttt{l} + \texttt{Shift} + \texttt{c}, esto también borra el pdf de salida, luego primero guardo el pdf donde me haga falta, y luego ejecuto esto.
 
 	   \subsection{Configuración de atajos}
-	   El archivo de configuración que solamente se carga en los archivos \texttt{tex} se encuentra en \texttt{~/.vim/pack/LaTeX/start/vimtex/ftplugin/tex.vim}, que tiene el siguiente contenido añadido por mí. Nótese los útiles atajos para mostrar los números de línea en Vim.
+	   El archivo de configuración que solamente se carga en los archivos \texttt{tex} se encuentra en \texttt{~/.vim/pack/LaTeX/start/vimtex/ftplugin/tex.vim}.
+	   Nótesen los atajos para mostrar los números de línea en vim. El archivo
+	   de configuración se encuentra a continuación:
 
-	   \begin{verbatim}
-"
-" Configuración introducida por mí
-"
-
-let maplocalleader = " "        " Establece la tecla
-" <localleader> a usar
-let conceallevel = 2    " Esto es una recomendación del
-" manual para la función de sustituir algunos comandos
-" por texto.
-
-set number
-" Establece que el ancho de una línea debe ser 80, y rompe
-" la línea en el primer espacio si no se cumple.
-set textwidth=80
-" Dibuja una columna en la línea 80 para ver cuál es el
-" límite de caracteres
-set colorcolumn=80
-" Establece que el color de la columna sea azul claro
-highlight ColorColumn ctermbg=lightblue
-
-" Inicio de atajos del teclado personalizados
-
-" Atajo para llamar al que hace lo de synctex, si estoy
-" escribiendo LaTeX y quiero ver en el pdf una zona de
-" lo que estoy escribiendo, entonces pulso <F4> y me
-" lleva en el visualizador de pdf a esa línea que
-" corresponde al LaTeX en el que se encuentra el cursor.
-nmap <F4> :call SVED_Sync()<CR>
-
-" Atajo para desactivar la numeración de las líneas que
-" vienen activadas por defecto
-nmap <F2> :set nonumber<CR>
-
-" Atajo para activar la numeración de las líneas
-nmap <F3> :set number<CR>
-
-" Fin de atajos del teclado personalizados
-
-"
-" Fin de la configuración introducida por mí
-"
-	   \end{verbatim}
-	  
-	   De todos los atajos disponibles recomiendo los que siempre uso en todos los documentos.
+	   \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {vim}{inc/tex.vim}
 \end{document}

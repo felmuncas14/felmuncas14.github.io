@@ -32,7 +32,7 @@
 
 \title{Gestión de la página web}
 \author{Felipe Muñoz Casasola}
-\date{13 de febrero de 2026}
+\date{13 de febrero de 2026; revisado el 21 de febrero de 2026}
 
 \begin{document}
     Estoy siguiendo las instrucciones de
@@ -61,8 +61,19 @@
     Pero en un futuro (tengo que arreglarlo) deberé incrustar los archivos de configuración
     de mi ordenador con minted, de forma que se cargarán de mi ordenador en los
     documentos de \LaTeX{} en tiempo de ejecución. Para esto parece ser que
-    actualmente \LaTeX{} usa una carpeta \texttt{\_minted}, que parece que la
-    reutiliza el compilador cuando compilo a través de la máquina virtual.
+    actualmente \LaTeX{} usa una carpeta \texttt{\_minted}. Para poder
+    aprovechar la caché, deberé usar la opción \texttt{forzencache}, pero
+    perece que no funciona correctamente, he abierto un \textit{issue} en
+    GitHub para que los mantenedores del paquete lo revisen.
+    
+    Y parece ser
+    que actualmente no es posible, por lo que he hecho un programita en Bash
+    que copia los archivos de configuración que aparecen en el archivo inc.txt
+    de cada proyecto de \LaTeX{} y lo copia en la carpeta \texttt{inc} del
+    proyecto para que pueda compilarlo haciendo referencia a ese archivo
+    copiado en inc. De llamar a este programita se encarga \texttt{make} cuando
+    se llama \textbf{sin argumentos}.
+    
     Por tanto, deberé primero compilar (usando el \texttt{Makefile} del
     proyecto) en mi ordenador principal, para que se creen las carpetas
     \texttt{\_minted} con los archivos de configuración incrustados. Y que

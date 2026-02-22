@@ -1,0 +1,3 @@
+$HOME/.config/lf/lfrc
+$HOME/.config/lf/icons
+$HOME/.config/lf/colors

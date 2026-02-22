@@ -1,0 +1,4 @@
+/etc/xdg/dwm/xinitrc
+$HOME/.barra/barra.sh
+$HOME/Documentos/Gestión del sistema/Gestor de ventanas/dwm/config.h
+$HOME/Documentos/Gestión del sistema/Gestor de ventanas/dmenu/config-dmenu.h

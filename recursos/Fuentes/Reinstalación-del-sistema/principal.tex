@@ -30,19 +30,11 @@
 \usepackage[margin=3cm]{geometry}
 \usepackage{microtype}
 \usepackage[pdfusetitle]{hyperref}
+\usepackage{minted}
 
 \title{Reinstalación completa del sistema paso por paso}
 \author{Felipe Muñoz Casasola}
-\date{24 de enero de 2026}
-
-\hypersetup{
-	pdfinfo={
-		Subject={Reinstalación del sistema},
-           	Creator={LaTeX},
-           	CreationDate={D:20260124110000+00'00},
-           	Producer={LaTeX}
-    	}
-}
+\date{24 de enero de 2026; revisado el 21 de febrero de 2026}
 
 \begin{document}
     \maketitle
@@ -87,6 +79,29 @@
 
     Y para que el cambio tenga efecto se tiene que reiniciar el sistema.
 
+    \section{Arreglar \textit{firmware}}
+    A pesar de haber seleccionado previamente durante la instalación la
+    inclusión del \textit{firmware} no libre, es muy posible que tenga
+    problemas. Principalmente suelo tener con el WiFi y con la GPU. Para
+    arreglarlos está la herramienta \texttt{isenkram} y es de gran
+    utilidad la wiki de Debian, en concreto \href{https://wiki.debian.org/Firmware}
+    {https://wiki.debian.org/Firmware}.
+
+    No obstante, es posible que algunos de los archivos de \textit{firmware}
+    que faltan no se encuentren de la anterior forma, y por tanto sea
+    necesario buscarlos en el kernel. Esto está sacado de la página
+    anteriormente referenciada, que se encuentra archivada
+    \href{https://web.archive.org/web/20260131222721/https://wiki.debian.org/Firmware}
+    {aquí}.
+
+    Por tanto, ya en los archivos de \textit{firmware} del kernel debería
+    poder encontrarlos. Aunque no siempre es posible encontrarlos todos.
+
+    En concreto se trata del repositorio de \textit{firmware} del kernel,
+    no en el de el propio kernel. A día de hoy dicho repositorio se encuentra
+    \href{https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree}
+    {aquí}.
+
     \section{Archivos de configuración a guardar}
     Los archivos de configuración se deben guardar en un dispositivo con un
     sistema de archivos que permita los enlaces simbólicos, pues el tema del
@@ -104,6 +119,7 @@
     	   	   \subitem Archivo de configuración de Privacy Badger.
     	   	   \subitem Archivo de configuración de Dark Reader.
     	   	   \subitem Archivo de configuración de Canvas Blocker.
+               \subitem Certificados de usuario.
     	   \item SearxNG
     	   	   \subitem Archivo de configuración en
 		   \texttt{$\sim$/.config/searxng/settings.yml}.
@@ -120,8 +136,6 @@
 		   se bloquea.
 	   \item Autenticador Proton
 		   \subitem Exportación de las claves almacenadas.
-	   \item Alacritty
-		   \subitem \texttt{\$HOME/.config/alacritty/alacritty.toml}.
 	   \item Rclone
 		   \subitem Archivo de configuración de Rclone, que actualmente
 		   se encuentra en
@@ -129,13 +143,13 @@
 		   \subitem Servicio para que automáticamente (activarlo para
 		   que se ejecute en cada arranque) se guarde una copia de
 		   seguridad cifrada en MEGA, actualmente en
-		   \texttt{/etc/\-systemd/system/\-rclone.service}. Debo tener la
+		   \texttt{$\sim$/.config/systemd/user.control/rclone.service}. Debo tener la
 		   carpeta Documentos previamente restaurada para que al
 		   reiniciar el sistema no borre la copia de seguridad en la
 		   nube porque los documentos estén vacíos.
 		   \subitem Otro servicio pero para hacer copia de seguridad del
 		   escritorio, actualmente en
-		   \texttt{/etc/syste\-md/\-system/rclone\_e.service}. Tengo que
+		   \texttt{$\sim$/.config/systemd/user.control/rclone\_e.service}. Tengo que
 		   haber restaurado previamente la carpeta Escritorio.
 	   \item \LaTeX{}
 		   \subitem Carpeta \texttt{$\sim$/texmf}, donde se guardan los
@@ -149,7 +163,8 @@
 		   \subitem Tengo que asegurarme de que los archivos de las
 		   contraseñas los haya guardado.
            \subitem También tengo que guardar la lista de frases contraseña
-           que tengo en español.
+           que tengo en español. De la que guardo una copia en este mismo
+           USB.
 	   \item DWM
 		   \subitem Carpeta \texttt{.barra} en el directorio raíz del
 		   usuario.
@@ -158,7 +173,7 @@
 		   \subitem Carpeta \texttt{.fonts} en la carpeta raíz del
 		   usuario.
 		   \subitem Carpeta \texttt{dwm} donde se encuentra el archivo
-		   \texttt{xinitr}, que se encuentra en la misma carpeta en la
+		   \texttt{xinitrc}, que se encuentra en la misma carpeta en la
 		   que el gestor de escritorio LXQt esté instalado por defecto,
 		   que actualmente es en \texttt{/etc/xdg}.
 		   \subitem Archivo \texttt{dwm.desktop} para que aparezca como
@@ -167,6 +182,10 @@
 		   \texttt{/usr/share/xsessions/dwm.desktop}.
 	   \item Terminal
 		   \subitem Archivo \texttt{.bashrc}.
+        \item Lf
+            \subitem Archivo \texttt{lfrc}.
+            \subitem Archivo \texttt{icons}.
+            \subitem Archivo \texttt{colors}.
     \end{enumerate}
 
     \section{Instalación del navegador Mullvad}
@@ -197,7 +216,7 @@
     preferiblemente \texttt{podman}, pues me suele dar fallos al instalar con
     las otras alternativas que se ofrecen actualmente. Una vez hecho esto usar
     la guía de la página de SearxNG para redirigir la configuración que guardaré
-    en \texttt{\~/.config/searxng/} a la configuración del contenedor. Para
+    en \texttt{$\sim$/.config/searxng/} a la configuración del contenedor. Para
     generar la
     configuración simplemente descargaré el archivo de configuración del
     repositorio de GitHub y lo compararé con el que he guardado de
@@ -205,19 +224,7 @@
     así porque es posible que algún motor de búsqueda haya quedado obsoleto y al
     aparecer en el antiguo archivo de configuración el servidor falle.
 
-    Para hacer que se inicie desde el principio, se pueden seguir las
-    instrucciones que haya actualizadas en la web y la página 5 del manual de la
-    orden \texttt{podman-systemd.unit}. Ahora mismo lo que se deben utilizar son
-    los \texttt{quadlet}. Actualmente lo he generado con \texttt{podlet}, que
-    está todavía en beta, pero me servirá el ejemplo en caso de que hiciera
-    falta actualizarlo.
-
-    Tengo que prestar atención a los errores haciendo un \texttt{status} con
-    \texttt{systemctl --user}, para corregir los posibles errores en el archivo
-    de configuración.
-
-    El \textit{quadlet} está en la carpeta
-    \texttt{$\sim$/.config/containters/systemd/searxng.container}
+    Para más información consultar el manual de SearxNG.
 
     \section{Instalación de QEMU}
     Para volver a instalar QEMU en el nuevo sistema tengo que seguir los
@@ -233,6 +240,11 @@
     configurarlas. Para ello simplemente tengo que crear nuevas máquinas
     virtuales usando la opción para importar con una imagen de disco existente,
     que previamente guardé antes de reinstalar el sistema.
+
+    Después de haber creado las máquinas virtuales tengo que ejecutar el comando
+    \texttt{sudo virsh net-autostart default}, gracias al usuario Querzion en
+    \href{https://forum.level1techs.com/t/solved-qemu-network-default-is-not-active-booting-from-hard-disk/194698}
+    {level1techs}
 
     \section{Tema del ratón}
     Instalar el tema \textit{Material Cursors} que se encuentra en la página
@@ -284,13 +296,13 @@
 
     Para los servicios de copia de seguridad automática de las carpetas
     Documentos y Escritorio, tengo que copiar los archivos \texttt{.service} en
-    la carpeta correspondiente a los servicios del sistema (quizá debería
-    ponerlos junto a los servicios del usuario, pero no me voy a arriesgar a
-    cambiarlo y que falle, por el momento).
+    la carpeta correspondiente a los servicios del usuario (con
+    \texttt{man 5 systemd.unit} actualmente aparecen en las rutas en las que
+    busca).
 
     \section{Instalación de Qterminal}
-    Debería venir instalado por defecto, no requiere una configuración más allá
-    de la simple instalación.
+    No hace falta más configuración que la de establecer la fuente a la que
+    tenga instalada para los iconos de \texttt{lf}, que reinstalaré más adelante.
 
     \section{Instalación de \LaTeX{}}
     Simplemente sigo las instrucciones de la página web para instalar la
@@ -302,15 +314,24 @@
     mi anterior ordenador.
 
     \section{Instalación de Vimtex completa}
-    Seguir las instrucciones del archivo correspondiente.
+    Seguir las instrucciones del archivo correspondiente. Nótese que al copiar
+    la carpeta \texttt{.vim} y el \texttt{.vimrc} hay que indicar en la
+    ruta de configuración de vim el modo deseado del \texttt{.vimrc} del
+    usuario, que será el de la aplicación del \texttt{.vimrc} por defecto
+    y el del usuario, pues el \texttt{.vimrc} que guardo está reducido a
+    solamente las configuraciones que guardo.
+
+    Actualmente el archivo en el que se define ese comportamiento está en
+    \texttt{/etc/vim}.
 
     \section{Instalación de KeePassXC}
     Viene ya instalado en la carpeta Escritorio, pero tengo que crear un enlace
     simbólico en \texttt{bin} para poderlo iniciar desde el \texttt{dpanel}.
     También puedo actualizarlo simplemente descargando el último
-    \texttt{AppImage} de su página oficial.
+    \texttt{AppImage} de su página oficial. Y modificando el enlace simbólico
+    de KeePassXC para que apunte a la nueva versión.
 
-    \section{Instalación del tema de Thunar}
+    \section{Instalación del tema de las aplicaciones GTK}
     El tema que tengo instalado está descargado de
     \href{https://github.com/vinceliuice/Graphite-gtk-theme}
     {https://github.com/vinceliuice/Graphite-gtk-theme}. En la configuración de
@@ -319,17 +340,21 @@
     
     \section{Instalación del tema de GRUB}
     La página para instalar el tema para Thunar también contendrá información
-    sobre la instalación del mismo tema en GRUB. Me he quedao por aquí
-    configurando.
+    sobre la instalación del mismo tema en GRUB.
 
     \section{Instalación del correo de Tuta}
-    Simplemente instalo su aplicación e inicio sesión.
+    Simplemente instalo su aplicación e inicio sesión. Al igual que con
+    KeePassXC (consultar su manual), hay que hacer un apaño para poder
+    usarlo con \texttt{dmenu}.
 
     \section{Instalación del BlueTooth}
-    Instalar \texttt{blueman-manager}.
+    Instalar \texttt{blueman}.
 
     \section{Instalación de Tor}
     Seguir las instrucciones de instalación para instalarlo en \texttt{opt}.
+
+    \section{Instalación de lf}
+    Seguir las instrucciones de su manual.
 
     \section{Instalación de DWM}
     La aplicación para realizar las capturas de pantalla será
@@ -368,10 +393,31 @@
     tema instalado en los bordes de DWM hay que seguir las instrucciones del
     enlace
     \href{https://unix.stackexchange.com/questions/541766/change-icon-and-cursor-theme-in-dwm}
-    {https://unix.stackexchange.com/questions/541766/change-icon-and-cursor-theme-in-dwm}
+    {https://unix.stackexchange.com/questions/541766/change-icon-and-cursor-theme-in-dwm}.
+
+    Ahora consulta el manual de la configuración de gestor de ventanas para más
+    información.
+
+    Es posible que para que se mantengan los ajustes de apariencia de las
+    aplicaciones sea necesario tener instalado el paquete
+    \texttt{lxde-settings-daemon}.
 
     \section{Terminación}
     Desinstalar las herramientas como \texttt{wget} y \texttt{curl} que se hayan
     necesitado instalar para instalar algunas de las aplicaciones. Y comprobar
     que Rclone esté funcionando correctamente.
+
+    \section{Solución de errores}
+
+    \subsection{Error en WiFi}
+    El error en el WiFi se soluciona usando el comando \texttt{nmcli}. Actualmente
+    lo que hay que hacer es:
+
+    \begin{minted}[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]{bash}
+nmcli connection show # Me muestra las redes que hay guardadas, copio el UUID
+# de la red a la que me quiero conectar.
+nmcli connection edit UUID
+set connection.autoconnect=yes
+set connection.autoconnect-retries=0    # Intenta siempre reconectarse.
+    \end{minted}
 \end{document}

@@ -31,10 +31,14 @@
 \usepackage{microtype}
 \usepackage[pdfusetitle]{hyperref}
 \usepackage{booktabs}
+\usepackage[utf8]{inputenc}	% Si no puede fallar minted
+% Para que recupere el archivo de la caché se añade el frozencache
+%\usepackage[frozencache=true]{minted}
+\usepackage{minted}
 
 \title{Gestor de ventanas}
 \author{Felipe Muñoz Casasola}
-\date{27 de septiembre de 2025}
+\date{27 de septiembre de 2025; revisado el 21 de febrero de 2026}
 
 \begin{document}
     \maketitle
@@ -58,340 +62,101 @@
 		   Atajo	&	Acción	\\
 		   \midrule
 
-		   \texttt{Win} + \texttt{z}	&	Abrir Thunar	\\
+		   \texttt{Win} + \texttt{z}	&	Abrir Lf	\\
+           \texttt{Shift} + \texttt{Win} + \texttt{z}   &   Abrir Lf como superusuario  \\
+           \texttt{Win} + \texttt{q}    &   Abrir el gestor de archivos gráfico \\
 		   \texttt{Win} + \texttt{n}	&	Abrir el navegador Mullvad	\\
 		   \texttt{Shift} + \texttt{Win} + \texttt{t}	&	Abrir Tor	\\
 		   \texttt{Shift} + \texttt{Win} + \texttt{a}	&	Apagar	\\
 		   \texttt{Shift} + \texttt{Win} + \texttt{r}	&	Reiniciar	\\
-		   \texttt{Impr Pant}	&	Hacer captura de pantalla (\texttt{xfce4-screenshooter})	\\
-		   \texttt{Shift} + \texttt{Win} + \texttt{l}	&	LibreOffice 25.8	\\
+		   \texttt{Impr Pant}	&	Hacer captura de pantalla	\\
+		   \texttt{Shift} + \texttt{Win} + \texttt{l}	&	LibreOffice	\\
 		   \texttt{Shift} + \texttt{Win} + \texttt{c}	&	KeePassXC	\\
 		   \texttt{Win} + \texttt{v}	&	Configurar el volumen	\\
 		   \midrule
     	   \end{tabular}
     \end{table}
 
-    \subsection{xinitr}
+    \subsection{xinitrc}
     Este es el archivo que se ejecuta al iniciar sesión cuando arranca el sistema. Este archivo debe iniciar dwm. Se encuentra en \texttt{/etc/xdg/dwm/} y tiene el siguiente contenido:
 
-    \begin{verbatim}
-#!/bin/bash
-# Taken from:
-#	https://raw.github.com/kaihendry/Kai-s--HOME/master/.xinitrc
-#
-
-DIRECTORIO_BARRA="/home/usuario/.barra/avd-main"
-
-export GTK_THEME=Graphite-Dark
-
-# Las aplicaciones que utilicen java no funcionan sin la siguiente línea
-export _JAVA_AWT_WM_NONREPARENTING=1
-
-setxkbmap  -model pc105 -layout "es(winkeys)" -option caps:shift -option \
-numpad:future
-
-# Añado LaTeX al PATH
-export PATH=$PATH:/usr/local/texlive/2025/bin/x86_64-linux/:/home/usuario/\
-            .local/bin/
-
-# Establezco el navegador por defecto a Mullvad
-xdg-settings set default-web-browser mullvad-browser.desktop
-
-# Quito el salvapantallas
-xset s off
-
-while true; do
-	$HOME/.barra/barra.sh
-       sleep 5	
-done &
-exec dwm
-    \end{verbatim}
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/xinitrc}
     
     Si la variable \texttt{GTK\_THEME} no está puesta, entonces no se activa el modo oscuro por defecto en el sistema, y las aplicaciones detectan que el tema por defecto del sistema es el modo claro. Hay que establecer la distribución del teclado, si no tampoco funciona correctamente.
 
     \subsection{Barra de estado}
-    Para configurar la barra de estado en dwm hay que crear un script, que provoca que se ponga la barra de estado, las líneas:
-
-    \begin{verbatim}
-while true; do
-        $HOME/.barra/barra.sh
-       sleep 5
-done &
-    \end{verbatim}
-    
-    aseguran que este script se ejecuta cada 5 segundos, actualizando así la barra. Si el tiempo de espera es menor, o no lo hay, la barra no funciona correctamente.
+    Para configurar la barra de estado en dwm hay que crear un script, que provoca que se ponga la barra de estado,
+    el archivo \texttt{xinitrc} se asegura de que se ejecuta cada cierto tiempo (mirar las líneas
+    correspondientes a la ejecución del programa)
+    . Si el tiempo de espera es menor, o no lo hay, la barra no funciona correctamente.
+    Nótese que está muy mal hecho el programita de la barra, es posible que dependiendo
+    del sistema (más bien, de la cantidad de cifras de los números de uso de memoria, CPU, red,
+    etc.) no funcione y haya que retocar los números que aparecen en los \texttt{cut}.
 
     El contenido de \texttt{\$HOME/.barra/barra.sh} es el siguiente:
 
-    \begin{verbatim}
-porcentaje_memoria=$(echo "scale=2;""100-$(cat /proc/meminfo | grep Mem | \
-                   awk 'NR==3' | cut -d ":" -f 2 | cut -d " " -f 4)/$(cat \
-		   /proc/meminfo | grep Mem | awk 'NR==1' | cut -d ":" -f 2\
-		   | cut -d " " -f 8)*100" | bc)
-porcentaje_cpu=$(ps --no-headers -A -o %cpu | awk '{cpu = cpu + $1} END \
-               {printf "%3.0f", cpu}')
-	
-# KiB recibidos.
-recibidos1=$(cat /proc/net/dev | grep wlp11s0)
-recibidos2=${recibidos1:8}
-recibidosi=$(echo "scale=10;""${recibidos2:0:-107}""/1024" | bc)
-
-sleep 2
-
-recibidos3=$(cat /proc/net/dev | grep wlp11s0)
-recibidos4=${recibidos3:8}
-recibidosf=$(echo "scale=10;""${recibidos4:0:-107}""/1024" | bc)
-
-recibidos=$(echo "scale=3;""$recibidosf-$recibidosi" | bc)
-
-# Kib transmitidos.
-transmitidos1=$recibidos1
-transmitidos2=${transmitidos1:68}
-transmitidosi=$(echo "scale=10;""${transmitidos2:0:-48}""/1024" | bc)
-
-transmitidos2=$recibidos3
-transmitidos3=${transmitidos2:68}
-transmitidosf=$(echo "scale=10;""${transmitidos3:0:-48}""/1024" | bc)
-
-transmitidos=$(echo "scale=3;""$transmitidosf-$transmitidosi" | bc)
-
-# Volumen.
-volumen=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" \
-        | cut -d "/" -f 2 | tr -d '[:space:]' | cut -d "%" -f 1)
-icono="U+F028"
-
-if [ $volumen -gt 50 ]; then
-	icono="U+F027"
-fi
-
-# Vale «sí» si está mudo el altavoz y «no» si no lo está.
-mudo=$(pactl get-sink-mute @DEFAULT_SINK@ | cut -d " " -f 2)
-
-if [ "$mudo" = "sí" ]; then
-	icono="U+EEE8"
-fi
-
-# Fecha
-fecha=$(date "+%A %d de %B %H:%M")
-
-# Separador
-separador=" :: "
-
-resultado="U+EFC5 $(echo $porcentaje_memoria | cut -d "." -f 1)%\
-          "$separador"U+F4BC $porcentaje_cpu%"$separador"U+F409 \
-	  $recibidos kiB/s U+F40A $transmitidos kiB/s"$separador"\
-	  $volumen% $icono "$separador""$fecha""
-
-xsetroot -name "$resultado"
-
-sleep 2
-    \end{verbatim}
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/barra.sh}
 
     Nota: los iconos se han cambiado por sus códigos Unicode, porque \LaTeX{} no
     me permite ponerlos, busca alguna guía en la página de las NerdFonts sobre
-    cómo introducirlos en vim.
+    cómo introducirlos en vim. Aunque \href{https://jdhao.github.io/2020/10/07/nvim_insert_unicode_char}
+    {aquí}, archivado \href{https://web.archive.org/web/20250115064631/https://jdhao.github.io/2020/10/07/nvim_insert_unicode_char};
+    se explica también cómo hacerlo. Basta buscar los códigos \textit{unicode}
+    en la página de las NerdFonts y buscar en esa guía cómo insertarlos. La
+    fuente que he usado es la 0xProtoNerdFont. Y todas las fuentes que estén
+    bajo esa carpeta estarán instaladas para mi usuario y se podrán usar.
 
-    Como se puede ver, el comando \texttt{xsetroot} es el que establece el texto de la barra. Lo de esperar otros dos segundos es para evitar  que la barra se vea mal. Para que funcione la barra hace falta la fuente 0xProtoNerdFont-Regular instalada, pues los iconos que usa son de esa fuente. Actualmente, esa fuente se encuentra en \texttt{\$HOME/.fonts/0xProtoNerdFont-Regular.ttf}.
+    Como se puede ver, el comando \texttt{xsetroot} es el que establece el texto de la barra.
+    Lo de esperar otros dos segundos es para evitar  que la barra se vea mal.
+    Para que funcione la barra hace falta la fuente 0xProtoNerdFont-Regular instalada,
+    pues los iconos que usa son de esa fuente. Actualmente, esa fuente se encuentra en \texttt{\$HOME/.fonts/0xProtoNerdFont-Regular.ttf}.
+
+    Actualmente los iconos del volumen no funcionan bien (el icono marca como si
+    tuviera volumen aunque no lo tenga). Está muy mal hecho y deberé
+    reescribirlo en algún otro lenguaje o hacer algo para que sea portable.
     
     \subsection{Configuración de dwm}
-    La configuración de dwm se encuentra en el archivo \texttt{\$HOME/Documentos/Gestión del sistema/\-Gestor de ventanas/dwm-6.6/config.h} que tiene a día de hoy el siguiente contenido:
+    La configuración de dwm es el archivo \texttt{\$HOME/Documentos/Gestión del sistema/\-Gestor de ventanas/dwm/config.h} que tiene a día de hoy el siguiente contenido:
 
-    \begin{verbatim}
-/* See LICENSE file for copyright and license details. */
-
-/* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "0xProtoNerdFont-Regular:size=10" };
-static const char dmenufont[]       = "0xProtoNerdFont-Regular:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char col_nar[]         = "#ff9d00";
-static const char col_ver[]         = "#00ff15";
-static const char col_gris[]        = "#b2b2b2";
-static const char col_mor[]         = "#9154ff";
-static const char col_roj[]         = "#ff0000";
-static const char col_negro[]       = "#000000";
-static const char *colors[][8]      = {
-	/*               fg         bg         border   */
-	{ col_gray3, col_cyan, col_cyan },
-	{ col_gray4, col_cyan,  col_cyan  },
-	{ col_nar, col_cyan, col_cyan },
-	{ col_ver, col_cyan, col_cyan },
-	{ col_gris, col_cyan, col_cyan },
-	{ col_mor, col_cyan, col_cyan },
-	{ col_roj, col_cyan, col_cyan },
-	{ col_negro, col_cyan, col_cyan },
-};
-
-
-/* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
-static const Rule rules[] = {
-	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Workrave","workrave","Workrave",     1 << 8,            0,           -1 },
-};
-
-/* layout(s) */
-static const float mfact     = 0.65; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
-static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
-
-static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "T",      tile },    /* first entry is default */
-	{ "F",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
-};
-
-/* key definitions */
-#define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
-
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] =  {
-	"dmenu_run", "-m", dmenumon, "-i", "-fn", dmenufont, "-nb", col_gray1,
-	"-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL
-};
-static const char *termcmd[]          = { "x-terminal-emulator", NULL };
-static const char *gestordearchivos[] = { "thunar", NULL };
-static const char *navegador[]        = { "mullvad-browser", NULL };
-static const char *tor[]              = { "/opt/Tor./Browser/start-tor-browser", "--detach", NULL };
-static const char *apagar[]           = {"/sbin/./poweroff", NULL};
-static const char *reiniciar[]        = {"/sbin/./reboot", NULL};
-static const char *capturar[]         = {"xfce4-screenshooter", NULL};
-static const char *documentos[]       = {"libreoffice25.8", NULL};
-static const char *contrasenias[]     = {
-	"/home/usuario/Escritorio/./KeePassXC-2.7.9-x86_64.AppImage",
-	NULL
-};
-static const char *volumen[]          = {"pavucontrol", NULL};
-
-static const Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,             		XK_c,      killclient,     {0} },
-	/*		Inicio de comandos introducidos por mí.				*/
-
-	{ MODKEY,                       XK_z,      spawn,     {.v = gestordearchivos} },
-	{ MODKEY,			XK_n,	   spawn,     {.v = navegador}},
-	{ MODKEY|ShiftMask,		XK_t,	   spawn,     {.v = tor}},
-	{ MODKEY|ShiftMask,             XK_a,      spawn,     {.v = apagar} },
-	{ MODKEY|ShiftMask,             XK_r,      spawn,     {.v = reiniciar} },
-	{ 0,                       XK_Print,  spawn,     {.v = capturar} },
-	{ MODKEY|ShiftMask,             XK_l,      spawn,     {.v = documentos} },
-	{ MODKEY|ShiftMask,             XK_c,      spawn,     {.v = contrasenias} },
-	{ MODKEY,                       XK_v,      spawn,     {.v = volumen}},
-
-	/*              Fin de comandos introducidos por mí.                         	*/
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-};
-
-/* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-};
-    \end{verbatim}
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]{c}{inc/config.h}
     
-    Una ayuda útil sobre la configuración de dwm es la wiki de ArchLinux. Para establecer los cambios, una vez modificado el archivo de configuración, hay que ejecutar los siguientes comandos en el mismo directorio: \texttt{make} y \texttt{sudo make install}, lo mismo aplica para los cambios en dmenu.
+    Una ayuda útil sobre la configuración de dwm es la wiki de ArchLinux (de donde he sacado la mayoría de la información).
+    Para establecer los cambios, una vez modificado el archivo de configuración, hay que ejecutar los siguientes comandos en el mismo directorio: \texttt{make} y \texttt{sudo make install}, lo mismo aplica para los cambios en dmenu.
 
     \subsection{Configuración de dmenu}
-    El archivo de configuración de dmenu se encuentra en \texttt{\$HOME/Documentos/Gestión del sistema/Gestor de ventanas/dmenu-5.4/config.h} que tiene el siguiente contenido:
+    El archivo de configuración de dmenu es \texttt{\$HOME/Documentos/Gestión del sistema/Gestor de ventanas/dmenu/config.h} que tiene el siguiente contenido:
 
-    \begin{verbatim}
-/* See LICENSE file for copyright and license details. */
-/* Default settings; can be overriden by command line. */
-
-static int topbar = 1; /* -b  option; if 0, dmenu appears at bottom     */
-/* -fn option overrides fonts[0]; default X11 font or font set */
-static const char *fonts[] = {
-	"monospace:size=10"
-};
-/* -p  option; prompt to the left of input field */
-static const char *prompt      = NULL;
-static const char *colors[SchemeLast][2] = {
-	/*     fg         bg       */
-	[SchemeNorm] = { "#bbbbbb", "#222222" },
-	[SchemeSel] = { "#eeeeee", "#005577" },
-	[SchemeOut] = { "#000000", "#00ffff" },
-};
-/* -l option; if nonzero, dmenu uses vertical list with given number of lines */
-static unsigned int lines      = 0;
-
-/*
- * Characters not considered part of a word while deleting words
- * for example: " /?\"&[]"
- */
-static const char worddelimiters[] = " ";
-    \end{verbatim}
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {bash}{inc/config-dmenu.h}
     
     \subsection{Emulador de terminal}
-    Al principio usaba otra terminal del mismo grupo de desarrolladores de dmw y dmenu, llamada st, pero aparte de que todavía no estaba en la versión 1.0, era incómoda para trabajar y después de alguna actualización del sistema dejó de funcionar, luego ahora mismo uso \texttt{Alacritty}.
+    Al principio usaba otra terminal del mismo grupo de desarrolladores de dmw y dmenu, llamada st, pero aparte de que todavía no estaba en la versión 1.0, era incómoda para trabajar
+    y después de alguna actualización del sistema dejó de funcionar, luego ahora mismo uso \texttt{qterminal}.
+
+    \subsection{Lf}
+    Instalar \texttt{lf} desde los repositorios y seguir las instrucciones del
+    manual.
 
     \subsection{Listar DWM en la lista de posibles gestores de escritorio a
     ejecutar}
     Tengo que copiar el archivo \texttt{dwm.desktop} en la carpeta
     \texttt{/usr/share/xsessions}.
+
+	\subsection{Error al iniciar el agente de autenticación}
+	En algunos entornos de escritorio el agente de autenticación no se inicia
+	automáticamente si no se inicia el entorno de escritorio. En dichos casos
+	se puede añadir al \texttt{xinitrc}.
+
+	\section{Fuentes}
+	\begin{itemize}
+		\item Wiki de ArchLinux: \href{https://wiki.archlinux.org/title/Dwm}
+		{https://wiki.archlinux.org/title/Dwm}, archivado \href{https://web.archive.org/web/20260217235550/https://wiki.archlinux.org/title/Dwm}
+		{aquí}.
+		\item Wiki de Gentoo: \href{https://wiki.gentoo.org/wiki/Dwm}
+		{https://wiki.gentoo.org/wiki/Dwm}, archivado \href{https://web.archive.org/web/20260209204730/https://wiki.gentoo.org/wiki/Dwm}
+		{aquí}.
+	\end{itemize}
     
 \end{document}

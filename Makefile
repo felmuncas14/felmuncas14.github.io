@@ -23,7 +23,9 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 
 # For more information, please refer to <https://unlicense.org/>
-# Realizado gracias a makefiletutorial.com
+# Realizado gracias a makefiletutorial.com, y al comentario del usuario
+# falstro en stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-
+# in-a-makefile
 
 ###############################################################################
 # Compila con LaTeX los proyectos bajo la carpeta especificada. Considerando
@@ -40,8 +42,10 @@
 
 # Compilador
 ltx=latexmk
-# Opciones para el compilador
-OPCIONES=-pdf -pdfxelatex=xelatex
+# Opciones para el compilador. La opción -gg (borrar los archivos auxiliares)
+# antes de compilar no se puede usar, pues si no luego al limpiar (con -C) no
+# limpia.
+OPCIONES=-pdfxe -cd
 # Opción para limpiar
 LIMPIAR=-C
 
@@ -66,31 +70,45 @@ FUENTES = $(shell find $(DIR_FNT) -name 'principal.tex')
 # el valor de -f que se le pasa a cut, deberé arreglarlo algún día.
 SALIDAS_SIN_PDF = $(shell find $(DIR_FNT) -name 'principal.tex' | cut -d / -f 3)
 SALIDAS = $(SALIDAS_SIN_PDF:%=%.pdf)
+# Archivo a ejecutar para guardar los archivos de configuración cada uno en
+# su carpeta inc.
+GUARDAR_CONFIG = copiar-config.sh
 
 ###############################################################################
 
 .PHONY: all
-all: com
+all: guardar-config com
 
 # Compila los proyectos de LaTeX.
 .PHONY: com
 com: $(SALIDAS)
 
-%.pdf: $(DIR_FNT)/%
-	$(ltx) $(OPCIONES) -output-directory="$<" "$</$(LTX_PR)"
-	mv "$</$(LTX_PDF)" "$(DIR_SALIDA)/$@"
-	$(ltx) $(LIMPIAR) $(OPCIONES) -output-directory="$<" "$</$(LTX_PR)"
+.PHONY: guardar-config
+guardar-config:
+	cd $(DIR_FNT); bash $(GUARDAR_CONFIG)
 
+%.pdf: $(DIR_FNT)/%
+	$(ltx) $(OPCIONES) $(LIMPIAR) "$</$(LTX_PR)"
+	$(ltx) $(OPCIONES) "$</$(LTX_PR)"
+	mv "$</$(LTX_PDF)" "$(DIR_SALIDA)/$@"
+	$(ltx) $(OPCIONES) $(LIMPIAR) "$</$(LTX_PR)"
+
+.PHONY: pre
 pre: com
 	jekyll serve
 
+.PHONY: limpiar
 # Limpia las posibles huellas que pudieran llevar a comprometer algún
 # metadato.
 limpiar:
-	find -type d -name _minted -exec rm -r '{}' \;
+# Espero que el siguiente comando falle, pues parece que falla siempre
+# por tanto, lo precedo por un guion para que aunque falle Make no
+# termine de ejecutar las reglas
+	-find -type d -name _minted -exec rm -r '{}' \;
+
+.PHONY: pub
 # Compila el proyecto y actualiza el repositorio
 pub: com limpiar
 	git add .
 	git commit -m "Actualizo los archivos."
 	git push
-

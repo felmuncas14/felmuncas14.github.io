@@ -1,0 +1,1 @@
+$HOME/.vim/pack/LaTeX/start/vimtex/ftplugin/tex.vim

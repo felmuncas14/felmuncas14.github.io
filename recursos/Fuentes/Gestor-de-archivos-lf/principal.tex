@@ -1,0 +1,119 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{minted}
+\usepackage{booktabs}
+
+\title{Gestor de archivos lf}
+\author{Felipe Muñoz Casasola}
+\date{22 de febrero de 2026}
+
+\begin{document}
+    \maketitle
+    \clearpage
+
+    \section{Instalación}
+    Lf se instala desde los repositorios, aunque esté desactualizado.
+
+    \section{Configuración}
+    Los archivos de configuración se encuentran en \texttt{$\sim$/.config/lf},
+    actualmente son los archivos \texttt{lfrc}, \texttt{icons} y \texttt{colors}.
+    El archivo \texttt{colors} es el que viene por defecto del repositorio de
+    \texttt{lf}. En el que hay unos archivos de configuración de ejemplo. Es
+    recomendable revisarlos alguna vez al reinstalarlos, así como la
+    documentación de \texttt{lf}. A los que se puede acceder a través de su
+    repositorio oficial.
+
+    \section{Uso}
+
+    \begin{table}[h]
+    	   \begin{tabular}{cc}
+    	   	   \midrule
+		   Atajo	&	Acción	\\
+		   \midrule
+
+		   \texttt{→}	&	Abrir archivo o directorio actual.	\\
+           \texttt{←}   &   Subir al directorio padre.  \\
+           \texttt{q}    &   Salir. \\
+		   \texttt{Espacio}	&	Seleccionar archivo o directorio actual.	\\
+		   \texttt{Ct}	&	Comprimir en un tar (dentro del tar se crea una carpeta comprimidos).	\\
+		   \texttt{Cz}	&	Comprimir en un zip (dentro del zip se crea una carpeta comprimidos).	\\
+           \texttt{E}	&	Extraer en el directorio actual.	\\
+		   \texttt{Co}	&	Cortar la selección.	\\
+		   \texttt{y}	&	Copiar la selección.	\\
+		   \texttt{r}	&	Renombrar.	\\
+		   \texttt{Supr}	&	Mover a la papelera (puede fallar con directorios).	\\
+		   \texttt{id}	&	Ir a $\sim$/Documentos.	\\
+           \texttt{ii}	&	Ir a $\sim$/Imágenes.	\\
+           \texttt{iu}	&	Ir a los USB (con LXQt ya se me montan por defecto).	\\
+           \texttt{ic}	&	Ir a $\sim$/Escritorio/Compartir.	\\
+           \texttt{it}	&	Ir a /tmp.	\\
+           \texttt{im}	&	Ir a $\sim$/Descargas.	\\
+           \texttt{m}   &   Mostrar archivos ocultos.	\\
+		   \midrule
+    	   \end{tabular}
+    \end{table}
+
+    \section{Archivos de configuración}
+    Archivo \texttt{lfrc}:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {vim}{inc/lfrc}
+
+    Archivo \texttt{icons}:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {vim}{inc/icons}
+
+    Para cambiar los iconos puedes leer el manual del gestor de ventanas, pues
+    allí viene cómo insertar iconos en Vim para poder cambiar los iconos.
+
+    Archivo \texttt{colors}:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {vim}{inc/colors}
+
+    \section{Arreglar errores}
+    \subsection{Vim sin resaltado de sintaxis}
+    Lo que ocurre es que por defecto \texttt{lf} usa por defecto \texttt{vi}
+    como editor de texto. Actualmente se le puede decir que use otro declarando
+    la variable \texttt{EDITOR} a \texttt{vim}.
+
+    \subsection{Los iconos no funcionan}
+    Asegúrate de haber activado los iconos en el archivo de configuración
+    \texttt{lfrc}. Y de tener en la terminal activa la fuente de esos
+    iconos, que actualmente es una NerdFont.
+
+    \subsection{Ejecutar \texttt{lf} como superusuario}
+    Para lograr esto basta invocar una terminal que ejecute el comando
+    \texttt{lf} precedido por \texttt{sudo}.
+\end{document}
