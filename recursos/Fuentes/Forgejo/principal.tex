@@ -71,4 +71,14 @@
     guardar copia de seguridad para no perder todos los repositorios.
 
     Para iniciar el servidor basta hacer \texttt{sudo systemctl start forgejo}.
+
+    \section{Conectar desde las máquinas virtuales a Forgejo}
+    Como se trata de una conexión desde la máquina virtual hacia el anfitrión, no
+    es difícil de encontrar. Aunque no hay absolutamente nada de información sobre
+    ello en el Internet. Un escaneo de las direcciones ip pasado a \texttt{nmap}, sobre
+    el valor que devuelve \texttt{ip a}, que es de la forma 192.168.1.1/24, por ejemplo,
+    devuelve en las máquinas virtuales que tengo que mi máquina anfitrión se encuentra en
+    192.168.122.1. Así que allí puedo conectarme, a 192.168.122.1:3000 a través de las
+    máquinas virtuales con http. El ssh no funciona porque parece que es importante
+    en ese caso que el dominio de la web sea localhost.
 \end{document}
