@@ -1,0 +1,74 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{minted}
+
+\title{Instalación de Forgejo}
+\author{Felipe Muñoz Casasola}
+\date{11 de marzo de 2026}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    \tableofcontents
+    \clearpage
+
+    \section{Instalación actual}
+    Forgejo lo tengo instalado desde un contenedor en podman, que se inicia automáticamente como
+    un servicio de systemd que se encuentra en \texttt{/etc/containers/systemd/forgejo.container}.
+    Tal y como lo describe la documentación de Forgejo actualmente \href{https://forgejo.org/docs/latest/admin/installation/docker/}
+    {aquí}, archivado \href{https://web.archive.org/web/20260307221713/https://forgejo.org/docs/latest/admin/installation/docker/}
+    {aquí}. Y que actualmente tiene el siguiente contenido:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {systemd}{inc/forgejo.container}
+
+    Para que funcione son necesarios otros dos archivos en la misma carpeta, \texttt{/etc/containers/systemd/forgejo.network}
+    y \texttt{/etc/containers/systemd/forgejo-data.volume}, que ambos tienen el siguiente contenido:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {systemd}{inc/forgejo.network}
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {systemd}{inc/forgejo-data.volume}
+
+    Ahora, Forgejo funciona con el usuario y la contraseña del administrados que tengo
+    guardados tanto en papel como en mi gestor de contraseñas.
+
+    El servidor se encuentra en \href{http://localhost:3000/}{http://localhost:3000/}.
+
+    Actualmente el directorio en el que se encuentra todo lo relacionado con Forgejo es el siguiente:
+    \texttt{/var/lib/containers/storage/volumes/forgejo-data/\_data/gitea/}, del que tendré que
+    guardar copia de seguridad para no perder todos los repositorios.
+
+    Para iniciar el servidor basta hacer \texttt{sudo systemctl start forgejo}.
+\end{document}

@@ -12,7 +12,9 @@
 # Programa que recorre todos los directorios en la misma carpeta, y que busca #
 # en cada uno de ellos un archivo NOMBRE_LISTA, en el que aparecen separados  #
 # por saltos de línea todos los archivos que se desean guardar en la carpeta  #
-# (que se encuentra dentro de ese mismo directorio) CARPETA_INC.	      #
+# (que se encuentra dentro de ese mismo directorio) CARPETA_INC. Advertencia: #
+# hay que añadir un salto de línea extra al final de los archivos si por      #
+# alguna razón fallase para copiar un archivo de un inc.txt nuevo	      #
 #
 # Esto me sirve para así poder guardar los archivos de configuración junto    #
 # con el código en LaTeX para poder pasármelos a la máquina virtual y que     #

@@ -1,0 +1,4 @@
+/etc/containers/systemd/forgejo.container
+/etc/containers/systemd/forgejo.network
+/etc/containers/systemd/forgejo-data.volume
+

@@ -1,0 +1,5 @@
+# Sacado de https://forgejo.org/docs/latest/admin/installation/docker/, versión
+# 14.0
+#forgejo-data.volume
+[Volume]
+VolumeName=forgejo-data

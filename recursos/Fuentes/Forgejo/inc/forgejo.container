@@ -1,0 +1,18 @@
+# Sacado de https://forgejo.org/docs/latest/admin/installation/docker/, versión
+# 14.0
+# forgejo.container
+[Container]
+ContainerName=forgejo
+Environment=USER_UID=1000
+Environment=USER_GID=1000
+Image=codeberg.org/forgejo/forgejo:14
+Network=forgejo.network
+PublishPort=3000:3000
+PublishPort=222:22
+Volume=forgejo-data:/data
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

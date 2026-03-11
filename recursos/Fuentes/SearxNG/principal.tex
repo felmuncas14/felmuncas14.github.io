@@ -61,6 +61,9 @@
     en la web y la página 5 del manual de la orden podman-systemd.unit. Ahora mismo lo que se deben
     utilizar son los \textit{quadlet}. Actualmente lo he generado con \texttt{podlet} que está todavía en beta, pero me
     servirá el ejemplo en caso de que hiciera falta actualizarlo.
+
+    Para depurar los \textit{quadlet}, según la página 5 del manual anteriormente citado (
+    \texttt{man 5 podman-systemd.unit}), puedo ejecutar: \texttt{/usr/lib/systemd/system-generators/podman-system-generator --dry-run}
     
     Dicho \textit{quadlet} es \texttt{$\sim$/.config/containters/systemd/searxng.container},
     y actualmente tiene el siguiente contenido:
