@@ -1,0 +1,25 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+/*\PYG{+w}{ }See\PYG{+w}{ }LICENSE\PYG{+w}{ }file\PYG{+w}{ }\PYG{k}{for}\PYG{+w}{ }copyright\PYG{+w}{ }and\PYG{+w}{ }license\PYG{+w}{ }details.\PYG{+w}{ }*/
+/*\PYG{+w}{ }Default\PYG{+w}{ }settings\PYG{p}{;}\PYG{+w}{ }can\PYG{+w}{ }be\PYG{+w}{ }overriden\PYG{+w}{ }by\PYG{+w}{ }\PYG{n+nb}{command}\PYG{+w}{ }line.\PYG{+w}{ }*/
+
+static\PYG{+w}{ }int\PYG{+w}{ }\PYG{n+nv}{topbar}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m}{1}\PYG{p}{;}\PYG{+w}{                      }/*\PYG{+w}{ }\PYGZhy{}b\PYG{+w}{  }option\PYG{p}{;}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }\PYG{l+m}{0},\PYG{+w}{ }dmenu\PYG{+w}{ }appears\PYG{+w}{ }at\PYG{+w}{ }bottom\PYG{+w}{     }*/
+/*\PYG{+w}{ }\PYGZhy{}fn\PYG{+w}{ }option\PYG{+w}{ }overrides\PYG{+w}{ }fonts\PYG{o}{[}\PYG{l+m}{0}\PYG{o}{]}\PYG{p}{;}\PYG{+w}{ }default\PYG{+w}{ }X11\PYG{+w}{ }font\PYG{+w}{ }or\PYG{+w}{ }font\PYG{+w}{ }\PYG{n+nb}{set}\PYG{+w}{ }*/
+static\PYG{+w}{ }const\PYG{+w}{ }char\PYG{+w}{ }*fonts\PYG{o}{[]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZob{}}
+\PYG{+w}{	}\PYG{l+s+s2}{\PYGZdq{}monospace:size=10\PYGZdq{}}
+\PYG{o}{\PYGZcb{}}\PYG{p}{;}
+static\PYG{+w}{ }const\PYG{+w}{ }char\PYG{+w}{ }*prompt\PYG{+w}{      }\PYG{o}{=}\PYG{+w}{ }NULL\PYG{p}{;}\PYG{+w}{      }/*\PYG{+w}{ }\PYGZhy{}p\PYG{+w}{  }option\PYG{p}{;}\PYG{+w}{ }prompt\PYG{+w}{ }to\PYG{+w}{ }the\PYG{+w}{ }left\PYG{+w}{ }of\PYG{+w}{ }input\PYG{+w}{ }field\PYG{+w}{ }*/
+static\PYG{+w}{ }const\PYG{+w}{ }char\PYG{+w}{ }*colors\PYG{o}{[}SchemeLast\PYG{o}{][}\PYG{l+m}{2}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZob{}}
+\PYG{+w}{	}/*\PYG{+w}{     }\PYG{n+nb}{fg}\PYG{+w}{         }\PYG{n+nb}{bg}\PYG{+w}{       }*/
+\PYG{+w}{	}\PYG{o}{[}SchemeNorm\PYG{o}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}bbbbbb\PYGZdq{}},\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}222222\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZcb{}},
+\PYG{+w}{	}\PYG{o}{[}SchemeSel\PYG{o}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}eeeeee\PYGZdq{}},\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}005577\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZcb{}},
+\PYG{+w}{	}\PYG{o}{[}SchemeOut\PYG{o}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}000000\PYGZdq{}},\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}00ffff\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZcb{}},
+\PYG{o}{\PYGZcb{}}\PYG{p}{;}
+/*\PYG{+w}{ }\PYGZhy{}l\PYG{+w}{ }option\PYG{p}{;}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }nonzero,\PYG{+w}{ }dmenu\PYG{+w}{ }uses\PYG{+w}{ }vertical\PYG{+w}{ }list\PYG{+w}{ }with\PYG{+w}{ }given\PYG{+w}{ }number\PYG{+w}{ }of\PYG{+w}{ }lines\PYG{+w}{ }*/
+static\PYG{+w}{ }unsigned\PYG{+w}{ }int\PYG{+w}{ }\PYG{n+nv}{lines}\PYG{+w}{      }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m}{0}\PYG{p}{;}
+
+/*
+\PYG{+w}{ }*\PYG{+w}{ }Characters\PYG{+w}{ }not\PYG{+w}{ }considered\PYG{+w}{ }part\PYG{+w}{ }of\PYG{+w}{ }a\PYG{+w}{ }word\PYG{+w}{ }\PYG{k}{while}\PYG{+w}{ }deleting\PYG{+w}{ }words
+\PYG{+w}{ }*\PYG{+w}{ }\PYG{k}{for}\PYG{+w}{ }example:\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{} /?\PYGZbs{}\PYGZdq{}\PYGZam{}[]\PYGZdq{}}
+\PYG{+w}{ }*/
+static\PYG{+w}{ }const\PYG{+w}{ }char\PYG{+w}{ }worddelimiters\PYG{o}{[]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{} \PYGZdq{}}\PYG{p}{;}
+\end{MintedVerbatim}

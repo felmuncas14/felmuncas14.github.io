@@ -1,0 +1,20 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Sacado de https://forgejo.org/docs/latest/admin/installation/docker/, versión}
+\PYG{c+c1}{\PYGZsh{} 14.0}
+\PYG{c+c1}{\PYGZsh{} forgejo.container}
+\PYG{k}{[Container]}
+\PYG{n+na}{ContainerName}\PYG{o}{=}\PYG{l+s}{forgejo}
+\PYG{n+na}{Environment}\PYG{o}{=}\PYG{l+s}{USER\PYGZus{}UID=1000}
+\PYG{n+na}{Environment}\PYG{o}{=}\PYG{l+s}{USER\PYGZus{}GID=1000}
+\PYG{n+na}{Image}\PYG{o}{=}\PYG{l+s}{codeberg.org/forgejo/forgejo:14}
+\PYG{n+na}{Network}\PYG{o}{=}\PYG{l+s}{forgejo.network}
+\PYG{n+na}{PublishPort}\PYG{o}{=}\PYG{l+s}{3000:3000}
+\PYG{n+na}{PublishPort}\PYG{o}{=}\PYG{l+s}{22:22}
+\PYG{n+na}{Volume}\PYG{o}{=}\PYG{l+s}{forgejo\PYGZhy{}data:/data}
+
+\PYG{k}{[Service]}
+\PYG{n+na}{Restart}\PYG{o}{=}\PYG{l+s}{always}
+
+\PYG{k}{[Install]}
+\PYG{n+na}{WantedBy}\PYG{o}{=}\PYG{l+s}{default.target}
+\end{MintedVerbatim}

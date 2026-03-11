@@ -1,0 +1,48 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Modificado por mí, sacado de la configuración de un usuario de GitHub}
+\PYG{c+c1}{\PYGZsh{} del que no sé el nombre. Modificado gracias a la respuesta del usuario}
+\PYG{c+c1}{\PYGZsh{} Jack O\PYGZsq{}Connor en serverfault.com/questions/794922/how\PYGZhy{}to\PYGZhy{}use\PYGZhy{}the\PYGZhy{}home\PYGZhy{}environment\PYGZhy{}variable\PYGZhy{}in\PYGZhy{}systemd\PYGZhy{}service\PYGZhy{}files}
+\PYG{k}{[Unit]}
+\PYG{n+na}{Description}\PYG{o}{=}\PYG{l+s}{SearXNG Privacy\PYGZhy{}Respecting Metasearch Engine}
+\PYG{n+na}{After}\PYG{o}{=}\PYG{l+s}{network\PYGZhy{}online.target}
+\PYG{n+na}{Wants}\PYG{o}{=}\PYG{l+s}{network\PYGZhy{}online.target}
+
+\PYG{k}{[Container]}
+\PYG{c+c1}{\PYGZsh{} Actualizar la fecha del commit abajo para actualizar}
+\PYG{c+c1}{\PYGZsh{} puede provocar errores, que se guardan en journalctl.}
+\PYG{c+c1}{\PYGZsh{} Pues al actualizar es posible que algunos motores de búsqueda ya no}
+\PYG{c+c1}{\PYGZsh{} funcionen y haya que desactivarlos o incluso marcarlos como «inactive»}
+\PYG{c+c1}{\PYGZsh{} en el archivo de configuración en .config/searxng/settings.yml}
+\PYG{n+na}{Image}\PYG{o}{=}\PYG{l+s}{docker.io/searxng/searxng:2026.2.20\PYGZhy{}93ac6ceb3}
+\PYG{n+na}{ContainerName}\PYG{o}{=}\PYG{l+s}{searxng}
+
+\PYG{c+c1}{\PYGZsh{} Port mapping \PYGZhy{} change 8888 to your desired port}
+\PYG{n+na}{PublishPort}\PYG{o}{=}\PYG{l+s}{8888:8080}
+
+\PYG{c+c1}{\PYGZsh{} Mount the settings directory (lives alongside this quadlet file)}
+\PYG{c+c1}{\PYGZsh{} User mode:   \PYGZti{}/.config/containers/systemd/searxng}
+\PYG{c+c1}{\PYGZsh{} System mode: /etc/containers/systemd/searxng}
+\PYG{n+na}{Volume}\PYG{o}{=}\PYG{l+s}{\PYGZpc{}h/.config/searxng/:/etc/searxng}
+
+\PYG{c+c1}{\PYGZsh{} Environment variables}
+\PYG{c+c1}{\PYGZsh{} IMPORTANT: Replace this secret with output of: openssl rand \PYGZhy{}hex 32}
+\PYG{n+na}{Environment}\PYG{o}{=}\PYG{l+s}{SEARXNG\PYGZus{}SECRET=e51e9202f17e96c018d8e24947444611ead56441d1f56b3ce0f3b729c4ec0233}
+\PYG{n+na}{Environment}\PYG{o}{=}\PYG{l+s}{SEARXNG\PYGZus{}BASE\PYGZus{}URL=http://localhost:8888}
+
+\PYG{c+c1}{\PYGZsh{} Security \PYGZhy{} drop all capabilities and add only needed ones}
+\PYG{c+c1}{\PYGZsh{}DropCapability=ALL}
+\PYG{c+c1}{\PYGZsh{}AddCapability=CHOWN SETGID SETUID}
+
+\PYG{c+c1}{\PYGZsh{} Auto\PYGZhy{}update}
+\PYG{n+na}{AutoUpdate}\PYG{o}{=}\PYG{l+s}{registry}
+
+\PYG{c+c1}{\PYGZsh{} Logging}
+\PYG{n+na}{LogDriver}\PYG{o}{=}\PYG{l+s}{journald}
+
+\PYG{k}{[Service]}
+\PYG{n+na}{Restart}\PYG{o}{=}\PYG{l+s}{on\PYGZhy{}success}
+\PYG{n+na}{TimeoutStartSec}\PYG{o}{=}\PYG{l+s}{300}
+
+\PYG{k}{[Install]}
+\PYG{n+na}{WantedBy}\PYG{o}{=}\PYG{l+s}{default.target}
+\end{MintedVerbatim}

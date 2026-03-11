@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+begin\PYG{n+nb}{\PYGZob{}}minted\PYG{n+nb}{\PYGZcb{}}[breaklines, breakanywhere, brea    ksymbolleft=\PYGZdq{}\PYGZdq{}, breaksymbolright=\PYGZdq{}\PYGZdq{}, breakanywheresymbolpre=\PYGZdq{}\PYGZdq{}, breakanywheresymbolpost=\PYGZdq{}\PYGZdq{}]\PYG{n+nb}{\PYGZob{}}systemd\PYG{n+nb}{\PYGZcb{}}
+\PYG{n+nb}{\PYGZca{}\PYGZca{}}Iejemplo
+end\PYG{n+nb}{\PYGZob{}}minted\PYG{n+nb}{\PYGZcb{}}
+\end{MintedVerbatim}

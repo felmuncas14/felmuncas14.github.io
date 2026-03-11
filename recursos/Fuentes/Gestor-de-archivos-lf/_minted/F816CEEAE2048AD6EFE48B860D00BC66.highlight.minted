@@ -1,0 +1,165 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYGZsh{} Modificado \PYG{k}{a} partir \PYG{k}{del} ejemplo \PYG{k}{del} repositorio \PYG{k}{de} \PYG{k}{lf}. Algunas modificaciones
+\PYGZsh{} son inspiradas por Eric Murphy
+
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+\PYGZsh{} Opciones \PYG{k}{de} configuración						      \PYGZsh{}
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+
+\PYGZsh{} interpreter \PYG{k}{for} \PYG{k}{shell} commands
+\PYG{k}{set} \PYG{k}{shell} \PYG{k}{sh}
+
+\PYGZsh{} \PYG{k}{set} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}eu\PYGZsq{}} \PYG{k}{options} \PYG{k}{for} \PYG{k}{shell} commands
+\PYGZsh{} These \PYG{k}{options} are used \PYG{k}{to} have safer \PYG{k}{shell} commands. Option \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}e\PYGZsq{}} \PYG{k}{is} used \PYG{k}{to}
+\PYGZsh{} \PYG{k}{exit} \PYG{k}{on} error and \PYG{k}{option} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}u\PYGZsq{}} \PYG{k}{is} used \PYG{k}{to} give error \PYG{k}{for} unset variables.
+\PYGZsh{} Option \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}f\PYGZsq{}} disables pathname expansion which can be useful when \PYGZdl{}\PYG{k}{f}\PYG{p}{,} \PYGZdl{}\PYG{n+nb}{fs}\PYG{p}{,} and
+\PYGZsh{} \PYGZdl{}fx variables contain names with \PYG{l+s+s1}{\PYGZsq{}*\PYGZsq{}} or \PYG{l+s+s1}{\PYGZsq{}?\PYGZsq{}} characters. However\PYG{p}{,} this \PYG{k}{option}
+\PYGZsh{} \PYG{k}{is} used selectively within individual commands \PYG{k}{as} it can be limiting at
+\PYGZsh{} times.
+\PYG{k}{set} shellopts \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}eu\PYGZsq{}}
+
+\PYGZsh{} \PYG{k}{set} internal field separator \PYG{p}{(}IFS\PYG{p}{)} \PYG{k}{to} \PYG{l+s+s2}{\PYGZdq{}\PYGZbs{}n\PYGZdq{}} \PYG{k}{for} \PYG{k}{shell} commands
+\PYGZsh{} This \PYG{k}{is} useful \PYG{k}{to} automatically split \PYG{k}{file} names \PYG{k}{in} \PYGZdl{}\PYG{n+nb}{fs} and \PYGZdl{}fx properly
+\PYGZsh{} since default \PYG{k}{file} separator used \PYG{k}{in} these variables \PYG{p}{(}\PYG{k}{i}.\PYG{k}{e}. \PYG{l+s+s1}{\PYGZsq{}filesep\PYGZsq{}} \PYG{k}{option}\PYG{p}{)}
+\PYGZsh{} \PYG{k}{is} newline. You need \PYG{k}{to} consider the values of these \PYG{k}{options} and create your
+\PYGZsh{} commands accordingly.
+\PYG{k}{set} ifs \PYG{l+s+s2}{\PYGZdq{}\PYGZbs{}n\PYGZdq{}}
+
+\PYGZsh{} leave some space at the \PYG{k}{top} and the bottom of the screen
+\PYG{k}{set} \PYG{n+nb}{scrolloff} \PYG{l+m}{10}
+
+\PYGZsh{} Use the `dim` attribute instead of \PYG{n+nb}{underline} \PYG{k}{for} the cursor \PYG{k}{in} the preview pane
+\PYG{k}{set} cursorpreviewfmt \PYG{l+s+s2}{\PYGZdq{}\PYGZbs{}033[7;2m\PYGZdq{}}
+
+\PYGZsh{} Mostrar \PYG{k}{la} fecha \PYG{k}{de} los archivos
+\PYG{k}{set} info size:time:atime
+
+\PYGZsh{} Habilitar \PYG{k}{el} ratón
+\PYG{k}{set} \PYG{n+nb}{mouse} true
+
+\PYGZsh{} Habilitar los iconos
+\PYG{k}{set} icons true
+
+\PYGZsh{} Modificar cómo \PYG{k}{se} crean archivos duplicados. \PYGZpc{}\PYG{k}{b} es \PYG{k}{el} nombre \PYG{k}{del} archivo sin
+\PYGZsh{} \PYG{k}{la} extensión\PYG{p}{,} \PYGZpc{}\PYG{k}{n} \PYG{k}{el} número \PYG{k}{de} duplicados \PYG{k}{y} \PYGZpc{}\PYG{k}{e} \PYG{k}{la} extensión. Se puede usar
+\PYGZsh{} \PYGZpc{}\PYG{k}{f} \PYG{n+nb}{para} obtener \PYG{k}{el} nombre completo \PYG{k}{del} archivo \PYG{p}{(}\PYG{k}{con} \PYG{k}{la} extensión\PYG{p}{)}.
+\PYG{k}{set} dupfilefmt \PYG{l+s+s2}{\PYGZdq{}\PYGZpc{}b\PYGZhy{}\PYGZpc{}n.\PYGZpc{}e\PYGZdq{}}
+
+\PYG{k}{set} sortby \PYG{l+s+s2}{\PYGZdq{}name\PYGZdq{}}
+
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+\PYGZsh{} Comandos adicionales \PYG{p}{(}\PYG{n+nb}{para} \PYG{k}{ver} \PYG{k}{el} resto predefinidos consultar \PYG{k}{el} manual\PYG{p}{)}   \PYGZsh{}
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+
+\PYGZsh{} \PYG{n+nb}{define} \PYG{k}{a} custom \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}} command
+\PYGZsh{} This command \PYG{k}{is} called when current \PYG{k}{file} \PYG{k}{is} not \PYG{k}{a} \PYG{n+nb}{directory}. You may want \PYG{k}{to}
+\PYGZsh{} use either \PYG{k}{file} extensions and/or mime types here. Below uses an editor \PYG{k}{for}
+\PYGZsh{} text \PYG{k}{files} and \PYG{k}{a} \PYG{k}{file} opener \PYG{k}{for} the rest.
+cmd open \PYGZam{}\PYGZob{}\PYGZob{}
+    case \PYGZdl{}\PYG{p}{(}\PYG{k}{file} \PYG{p}{\PYGZhy{}\PYGZhy{}}mime\PYG{p}{\PYGZhy{}}type \PYG{p}{\PYGZhy{}}Lb \PYGZdl{}\PYG{k}{f}\PYG{p}{)} \PYG{k}{in}
+        text/*\PYG{p}{)} \PYG{k}{lf} \PYG{p}{\PYGZhy{}}remote \PYG{l+s+s2}{\PYGZdq{}send \PYGZdl{}id \PYGZbs{}\PYGZdl{}\PYGZdl{}EDITOR \PYGZbs{}\PYGZdl{}fx\PYGZdq{}};;
+        *\PYG{p}{)} \PYG{k}{for} \PYG{k}{f} \PYG{k}{in} \PYGZdl{}fx; \PYG{k}{do} \PYGZdl{}OPENER \PYGZdl{}\PYG{k}{f} \PYG{p}{\PYGZgt{}} \PYG{l+s+sr}{/dev/}null \PYG{l+m}{2}\PYG{p}{\PYGZgt{}} \PYG{l+s+sr}{/dev/}null \PYGZam{} done;;
+    esac
+\PYGZcb{}\PYGZcb{}
+
+
+\PYGZsh{} \PYG{n+nb}{define} \PYG{k}{a} custom \PYG{l+s+s1}{\PYGZsq{}rename\PYGZsq{}} command without \PYG{n+nb}{prompt} \PYG{k}{for} overwrite
+\PYGZsh{} cmd rename \PYGZpc{}[ \PYG{p}{\PYGZhy{}}\PYG{k}{e} \PYGZdl{}\PYG{l+m}{1} ] \PYGZam{}\PYGZam{} printf \PYG{l+s+s2}{\PYGZdq{}file exists\PYGZdq{}} \PYG{p}{||} mv \PYGZdl{}\PYG{k}{f} \PYGZdl{}\PYG{l+m}{1}
+\PYGZsh{} map \PYG{k}{r} push :rename\PYG{p}{\PYGZlt{}}space\PYG{p}{\PYGZgt{}}
+
+\PYGZsh{} \PYG{k}{make} sure trash folder exists
+\PYGZsh{} \PYGZpc{}mkdir \PYG{p}{\PYGZhy{}}\PYG{k}{p} \PYG{p}{\PYGZti{}}/.trash
+
+\PYGZsh{} move current \PYG{k}{file} or selected \PYG{k}{files} \PYG{k}{to} trash folder
+\PYGZsh{} \PYG{p}{(}also see \PYG{l+s+s1}{\PYGZsq{}man mv\PYGZsq{}} \PYG{k}{for} \PYG{n+nb}{backup}/overwrite \PYG{k}{options}\PYG{p}{)}
+cmd trash \PYGZpc{}\PYG{k}{set} \PYG{p}{\PYGZhy{}}\PYG{k}{f}; mv \PYG{p}{\PYGZhy{}}\PYG{k}{t} \PYG{p}{\PYGZti{}}\PYG{l+s+sr}{/.local/}share\PYG{l+s+sr}{/Trash/}\PYG{k}{files} \PYGZdl{}fx
+
+\PYGZsh{} \PYG{n+nb}{define} \PYG{k}{a} custom \PYG{l+s+s1}{\PYGZsq{}delete\PYGZsq{}} command
+ cmd delete \PYGZdl{}\PYGZob{}\PYGZob{}
+     \PYG{k}{set} \PYG{p}{\PYGZhy{}}\PYG{k}{f}
+     printf \PYG{l+s+s2}{\PYGZdq{}\PYGZdl{}fx\PYGZbs{}n\PYGZdq{}}
+     printf \PYG{l+s+s2}{\PYGZdq{}delete? [y/N] \PYGZdq{}}
+     read ans
+     [ \PYG{l+s+s2}{\PYGZdq{}\PYGZdl{}ans\PYGZdq{}} \PYG{p}{=} \PYG{l+s+s2}{\PYGZdq{}y\PYGZdq{}} ] \PYGZam{}\PYGZam{} rm \PYG{p}{\PYGZhy{}}rf \PYGZdl{}fx
+ \PYGZcb{}\PYGZcb{}
+
+
+
+\PYGZsh{} extract the current \PYG{k}{file} with the \PYG{k}{right} command
+\PYGZsh{} \PYG{p}{(}xkcd link: https:\PYG{l+s+sr}{//}xkcd.\PYG{k}{com}\PYG{l+s+sr}{/1168/}\PYG{p}{)}
+cmd extract \PYGZdl{}\PYGZob{}\PYGZob{}
+    \PYG{k}{set} \PYG{p}{\PYGZhy{}}\PYG{k}{f}
+    case \PYGZdl{}\PYG{k}{f} \PYG{k}{in}
+        *.tar.bz\PYG{p}{|}*.tar.bz2\PYG{p}{|}*.tbz\PYG{p}{|}*.tbz2\PYG{p}{)} tar xjvf \PYGZdl{}\PYG{k}{f};;
+        *.tar.gz\PYG{p}{|}*.tgz\PYG{p}{)} tar xzvf \PYGZdl{}\PYG{k}{f};;
+        *.tar.xz\PYG{p}{|}*.txz\PYG{p}{)} tar xJvf \PYGZdl{}\PYG{k}{f};;
+        *.zip\PYG{p}{)} unzip \PYGZdl{}\PYG{k}{f};;
+        *.rar\PYG{p}{)} unrar \PYG{k}{x} \PYGZdl{}\PYG{k}{f};;
+        *.\PYG{l+m}{7}z\PYG{p}{)} \PYG{l+m}{7}z \PYG{k}{x} \PYGZdl{}\PYG{k}{f};;
+    esac
+\PYGZcb{}\PYGZcb{}
+
+\PYGZsh{} compress current \PYG{k}{file} or selected \PYG{k}{files} with tar and gunzip
+cmd tar \PYGZdl{}\PYGZob{}\PYGZob{}
+    \PYG{k}{set} \PYG{p}{\PYGZhy{}}\PYG{k}{f}
+    mkdir \PYGZdl{}\PYG{l+m}{1}
+    \PYG{k}{cp} \PYG{p}{\PYGZhy{}}\PYG{k}{r} \PYGZdl{}fx \PYGZdl{}\PYG{l+m}{1}
+    tar czf \PYGZdl{}\PYG{l+m}{1}.tar.gz \PYGZdl{}\PYG{l+m}{1}
+    rm \PYG{p}{\PYGZhy{}}rf \PYGZdl{}\PYG{l+m}{1}
+\PYGZcb{}\PYGZcb{}
+
+\PYGZsh{} compress current \PYG{k}{file} or selected \PYG{k}{files} with zip
+cmd zip \PYGZdl{}\PYGZob{}\PYGZob{}
+    \PYG{k}{set} \PYG{p}{\PYGZhy{}}\PYG{k}{f}
+    mkdir \PYGZdl{}\PYG{l+m}{1}
+    \PYG{k}{cp} \PYG{p}{\PYGZhy{}}\PYG{k}{r} \PYGZdl{}fx \PYGZdl{}\PYG{l+m}{1}
+    zip \PYG{p}{\PYGZhy{}}\PYG{k}{r} \PYGZdl{}\PYG{l+m}{1}.zip \PYGZdl{}\PYG{l+m}{1}
+    rm \PYG{p}{\PYGZhy{}}rf \PYGZdl{}\PYG{l+m}{1}
+\PYGZcb{}\PYGZcb{}
+
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+\PYGZsh{} Atajos \PYG{k}{del} teclado							      \PYGZsh{}
+\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}
+
+\PYGZsh{} use enter \PYG{k}{for} \PYG{k}{shell} commands
+map \PYG{p}{\PYGZlt{}}enter\PYG{p}{\PYGZgt{}} \PYG{k}{shell}
+
+\PYGZsh{} show the result of execution of \PYG{k}{previous} commands
+map ñ \PYG{p}{!}true
+
+\PYGZsh{} execute current \PYG{k}{file} \PYG{p}{(}must be executable\PYG{p}{)}
+map \PYG{k}{x} \PYGZdl{}\PYGZdl{}\PYG{k}{f}
+map X \PYG{p}{!}\PYGZdl{}\PYG{k}{f}
+
+\PYGZsh{} dedicated keys \PYG{k}{for} \PYG{k}{file} opener actions
+map \PYG{k}{a} \PYGZam{}mimeopen \PYGZdl{}\PYG{k}{f}
+map A \PYGZdl{}mimeopen \PYG{p}{\PYGZhy{}\PYGZhy{}}ask \PYGZdl{}\PYG{k}{f}
+
+\PYGZsh{} mkdir command. See wiki \PYG{k}{if} you want it \PYG{k}{to} select created \PYG{k}{dir}
+map \PYG{k}{d} :push \PYGZpc{}mkdir\PYG{p}{\PYGZlt{}}space\PYG{p}{\PYGZgt{}}
+
+\PYGZsh{} use \PYG{l+s+s1}{\PYGZsq{}\PYGZlt{}delete\PYGZgt{}\PYGZsq{}} \PYG{n+nb}{key} \PYG{k}{for} either \PYG{l+s+s1}{\PYGZsq{}trash\PYGZsq{}} or \PYG{l+s+s1}{\PYGZsq{}delete\PYGZsq{}} command
+map \PYG{p}{\PYGZlt{}}delete\PYG{p}{\PYGZgt{}} trash
+\PYGZsh{} Para directorios no funcionará \PYG{k}{la} papelera posiblemente
+map \PYG{p}{\PYGZlt{}}\PYG{n+nb}{backspace}\PYG{p}{\PYGZgt{}} delete
+\PYGZsh{} map \PYG{p}{\PYGZlt{}}delete\PYG{p}{\PYGZgt{}} delete
+map E extract
+
+\PYGZsh{} El nombre «comprimidos» es \PYG{k}{el} nombre \PYG{k}{del} archivo tar \PYG{k}{a} crear \PYG{p}{(}sin \PYG{k}{la}
+\PYGZsh{} extensión\PYG{p}{)}. Por defecto \PYG{k}{se} comprime \PYG{k}{con} gz\PYG{p}{,} pero \PYG{k}{se} puede cambiar
+\PYGZsh{} modificando \PYG{k}{el} comando tar arriba.
+map Ct tar comprimidos
+map Cz zip comprimidos
+map Co cut
+
+\PYGZsh{} Desestablezco \PYG{k}{el} atajo \PYG{k}{i}
+map \PYG{k}{i}
+map id \PYG{k}{cd} \PYG{p}{\PYGZti{}}/Documentos
+map \PYG{n+nb}{ic} \PYG{k}{cd} \PYG{p}{\PYGZti{}}\PYG{l+s+sr}{/Escritorio/}Compartir
+map ii \PYG{k}{cd} \PYG{p}{\PYGZti{}}/Imágenes
+map it \PYG{k}{cd} /tmp
+map iu \PYG{k}{cd} \PYG{l+s+sr}{/media/}
+map \PYG{n+nb}{im} \PYG{k}{cd} \PYG{p}{\PYGZti{}}/Descargas
+
+map \PYG{k}{m} \PYG{k}{set} \PYG{n+nb}{hidden}\PYG{p}{!}
+\end{MintedVerbatim}

@@ -81,4 +81,10 @@
     192.168.122.1. Así que allí puedo conectarme, a 192.168.122.1:3000 a través de las
     máquinas virtuales con http. El ssh no funciona porque parece que es importante
     en ese caso que el dominio de la web sea localhost.
+
+    \section{Arreglar errores con ssh}
+    Hay que tener cuidado, porque por defecto Forgejo tenía puesto como puerto de ssh el 222
+    en el inicio de systemd, y aunque en los enlaces no especificara el
+    puerto porque dentro del contenedor era el 22, fuera era el 222. Y por eso
+    no funcionaba.
 \end{document}

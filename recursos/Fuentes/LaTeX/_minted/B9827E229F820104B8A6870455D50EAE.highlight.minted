@@ -1,0 +1,68 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZdq{} VimTeX \PYGZhy{} LaTeX plugin for Vim}
+\PYG{c}{\PYGZdq{}}
+\PYG{c}{\PYGZdq{} Maintainer: Karl Yngve Lervåg}
+\PYG{c}{\PYGZdq{} Email:      karl.yngve@gmail.com}
+\PYG{c}{\PYGZdq{}}
+
+\PYG{c}{\PYGZdq{}}
+\PYG{c}{\PYGZdq{} Configuración introducida por mí}
+\PYG{c}{\PYGZdq{}}
+
+\PYG{k}{let} maplocalleader \PYG{p}{=} \PYG{l+s+s2}{\PYGZdq{} \PYGZdq{}}	\PYG{c}{\PYGZdq{} Establece la tecla \PYGZlt{}localleader\PYGZgt{} a usar}
+\PYG{k}{let} \PYG{n+nb}{conceallevel} \PYG{p}{=} \PYG{l+m}{2}	\PYG{c}{\PYGZdq{} Esto es una recomendación del manual para la función}
+\PYG{c}{\PYGZdq{} de sustituir algunos comandos por texto.}
+
+\PYG{k}{set} \PYG{k}{number}
+\PYG{c}{\PYGZdq{} Establece que el ancho de una línea debe ser 80, y rompe la línea en el}
+\PYG{c}{\PYGZdq{} primer espacio si no se cumple.}
+\PYG{k}{set} \PYG{n+nb}{textwidth}\PYG{p}{=}\PYG{l+m}{80}
+\PYG{c}{\PYGZdq{} Dibuja una columna en la línea 80 para ver cuál es el límite de caracteres}
+\PYG{k}{set} \PYG{n+nb}{colorcolumn}\PYG{p}{=}\PYG{l+m}{80}
+\PYG{c}{\PYGZdq{} Establece que el color de la columna sea azul claro}
+\PYG{n+nb}{highlight} ColorColumn ctermbg\PYG{p}{=}lightblue
+
+\PYG{c}{\PYGZdq{} Inicio de atajos del teclado personalizados}
+
+\PYG{c}{\PYGZdq{} Atajo para desactivar la numeración de las líneas que vienen activadas}
+\PYG{c}{\PYGZdq{} por defecto}
+nmap \PYG{p}{\PYGZlt{}}F2\PYG{p}{\PYGZgt{}} :\PYG{k}{set} \PYG{n+nb}{nonumber}\PYG{p}{\PYGZlt{}}CR\PYG{p}{\PYGZgt{}}
+
+\PYG{c}{\PYGZdq{} Atajo para activar la numeración de las líneas}
+nmap \PYG{p}{\PYGZlt{}}F3\PYG{p}{\PYGZgt{}} :\PYG{k}{set} \PYG{k}{number}\PYG{p}{\PYGZlt{}}CR\PYG{p}{\PYGZgt{}}
+
+\PYG{c}{\PYGZdq{} Fin de atajos del teclado personalizados}
+
+\PYG{c}{\PYGZdq{}}
+\PYG{c}{\PYGZdq{} Fin de la configuración introducida por mí}
+\PYG{c}{\PYGZdq{}}
+
+\PYG{k}{if} \PYG{p}{!}get\PYG{p}{(}\PYG{k}{g}:\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}vimtex\PYGZus{}enabled\PYGZsq{}}\PYG{p}{,} \PYG{l+m}{1}\PYG{p}{)}
+  \PYG{k}{finish}
+\PYG{k}{endif}
+
+\PYG{k}{if} exists\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}b:did\PYGZus{}ftplugin\PYGZsq{}}\PYG{p}{)}
+  \PYG{k}{finish}
+\PYG{k}{endif}
+\PYG{k}{let} \PYG{k}{b}:did\PYGZus{}ftplugin \PYG{p}{=} \PYG{l+m}{1}
+
+\PYG{k}{if} \PYG{p}{!(!}get\PYG{p}{(}\PYG{k}{g}:\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}vimtex\PYGZus{}version\PYGZus{}check\PYGZsq{}}\PYG{p}{,} \PYG{l+m}{1}\PYG{p}{)}
+      \PYGZbs{} \PYG{p}{||} has\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}nvim\PYGZhy{}0.10\PYGZsq{}}\PYG{p}{)}
+      \PYGZbs{} \PYG{p}{||} has\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}patch\PYGZhy{}9.1.16\PYGZsq{}}\PYG{p}{))}
+  \PYG{k}{echoerr} \PYG{l+s+s1}{\PYGZsq{}Error: VimTeX does not support your version of Vim\PYGZsq{}}
+  \PYG{k}{echom} \PYG{l+s+s1}{\PYGZsq{}Please update to Vim 9.1.16 or neovim 0.10 or later!\PYGZsq{}}
+  \PYG{k}{echom} \PYG{l+s+s1}{\PYGZsq{}For more info, please see :h vimtex\PYGZus{}version\PYGZus{}check\PYGZsq{}}
+  \PYG{k}{finish}
+\PYG{k}{endif}
+
+\PYG{k}{call} vimtex\PYGZsh{}init\PYG{p}{()}
+
+\PYG{c}{\PYGZdq{} Check if user has tree\PYGZhy{}sitter enabled and give a warning if that is the case.}
+\PYG{c}{\PYGZdq{} This is useful, since a lot of users are not aware of the clash between}
+\PYG{c}{\PYGZdq{} VimTeX\PYGZsq{}s syntax highlighting and Tree\PYGZhy{}sitters syntax highlighting.}
+\PYG{k}{if} has\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}nvim\PYGZhy{}0.5\PYGZsq{}}\PYG{p}{)}
+      \PYGZbs{} \PYGZam{}\PYGZam{} \PYG{k}{g}:vimtex\PYGZus{}syntax\PYGZus{}enabled
+      \PYGZbs{} \PYGZam{}\PYGZam{} \PYG{p}{!}\PYG{k}{g}:vimtex\PYGZus{}syntax\PYGZus{}conceal\PYGZus{}disable
+  \PYG{k}{call} timer\PYGZus{}start\PYG{p}{(}\PYG{l+m}{1000}\PYG{p}{,} \PYG{k}{function}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}vimtex\PYGZsh{}nvim\PYGZsh{}check\PYGZus{}treesitter\PYGZsq{}}\PYG{p}{,} [bufnr\PYG{p}{()}]\PYG{p}{))}
+\PYG{k}{endif}
+\end{MintedVerbatim}

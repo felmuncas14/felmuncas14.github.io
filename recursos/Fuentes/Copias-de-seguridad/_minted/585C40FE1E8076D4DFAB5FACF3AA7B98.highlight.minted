@@ -1,0 +1,23 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+ch}{\PYGZsh{}!/bin/sh}
+
+\PYG{c+c1}{\PYGZsh{} Basic snapshot\PYGZhy{}style rsync backup script }
+\PYG{n+nv}{DISPOSITIVO}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}004063A2364D3CD9\PYGZdq{}}
+\PYG{n+nv}{FECHA}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}+\PYGZpc{}d\PYGZhy{}de\PYGZhy{}\PYGZpc{}B\PYGZhy{}de\PYGZhy{}\PYGZpc{}Y\PYGZhy{}hora\PYGZhy{}\PYGZpc{}H\PYGZhy{}minuto\PYGZhy{}\PYGZpc{}M\PYGZhy{}segundo\PYGZhy{}\PYGZpc{}S\PYGZdq{}}
+\PYG{c+c1}{\PYGZsh{} Config}
+\PYG{n+nv}{OPT}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}aPh\PYGZdq{}}
+\PYG{n+nv}{LINK}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZhy{}link\PYGZhy{}dest=/media/}\PYG{n+nv}{\PYGZdl{}USER}\PYG{l+s+s2}{/}\PYG{n+nv}{\PYGZdl{}DISPOSITIVO}\PYG{l+s+s2}{/Copia\PYGZhy{}de\PYGZhy{}seguridad\PYGZhy{}de\PYGZhy{}imágenes/capturas/última/\PYGZdq{}}\PYG{+w}{ }
+\PYG{n+nv}{SRC}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}HOME}\PYG{l+s+s2}{/Imágenes/\PYGZdq{}}
+\PYG{n+nv}{SNAP}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}HOME}\PYG{l+s+s2}{/}\PYG{n+nv}{\PYGZdl{}DISPOSITIVO}\PYG{l+s+s2}{/Copia\PYGZhy{}de\PYGZhy{}seguridad\PYGZhy{}de\PYGZhy{}imágenes/capturas/\PYGZdq{}}
+\PYG{n+nv}{LAST}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}HOME}\PYG{l+s+s2}{/}\PYG{n+nv}{\PYGZdl{}DISPOSITIVO}\PYG{l+s+s2}{/Copia\PYGZhy{}de\PYGZhy{}seguridad\PYGZhy{}de\PYGZhy{}imágenes/capturas/última\PYGZdq{}}
+\PYG{n+nv}{date}\PYG{o}{=}\PYG{l+s+sb}{`}date\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}FECHA}\PYG{l+s+sb}{`}
+
+\PYG{c+c1}{\PYGZsh{} Run rsync to create snapshot}
+rsync\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}OPT}\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}LINK}\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}SRC}\PYG{+w}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nv}{SNAP}\PYG{l+s+si}{\PYGZcb{}}\PYG{n+nv}{\PYGZdl{}date}
+
+\PYG{c+c1}{\PYGZsh{} Remove symlink to previous snapshot}
+rm\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}LAST}
+
+\PYG{c+c1}{\PYGZsh{} Create new symlink to latest snapshot for the next backup to hardlink}
+ln\PYG{+w}{ }\PYGZhy{}s\PYG{+w}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nv}{SNAP}\PYG{l+s+si}{\PYGZcb{}}\PYG{n+nv}{\PYGZdl{}date}\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}LAST}
+\end{MintedVerbatim}

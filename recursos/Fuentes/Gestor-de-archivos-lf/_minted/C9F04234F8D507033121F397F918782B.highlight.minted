@@ -1,0 +1,176 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYGZsh{} \PYG{k}{vim}:\PYG{n+nb}{ft}\PYG{p}{=}dircolors
+\PYGZsh{} \PYG{p}{(}This \PYG{k}{is} not \PYG{k}{a} dircolors \PYG{k}{file} but it helps \PYG{k}{to} \PYG{n+nb}{highlight} \PYG{k}{colors} and \PYG{n+nb}{comments}\PYG{p}{)}
+
+\PYGZsh{} default values from dircolors
+\PYGZsh{} \PYG{p}{(}entries with \PYG{k}{a} leading \PYGZsh{} are not implemented \PYG{k}{in} \PYG{k}{lf}\PYG{p}{)}
+\PYGZsh{} \PYGZsh{}no     \PYG{l+m}{00}              \PYGZsh{} NORMAL
+\PYGZsh{} \PYG{k}{fi}      \PYG{l+m}{00}              \PYGZsh{} FILE
+\PYGZsh{} \PYGZsh{}\PYG{n+nb}{rs}     \PYG{l+m}{0}               \PYGZsh{} RESET
+\PYGZsh{} \PYG{k}{di}      \PYG{l+m}{01};\PYG{l+m}{34}           \PYGZsh{} DIR
+\PYGZsh{} ln      \PYG{l+m}{01};\PYG{l+m}{36}           \PYGZsh{} LINK
+\PYGZsh{} \PYGZsh{}\PYG{n+nb}{mh}     \PYG{l+m}{00}              \PYGZsh{} MULTIHARDLINK
+\PYGZsh{} \PYG{n+nb}{pi}      \PYG{l+m}{40};\PYG{l+m}{33}           \PYGZsh{} FIFO
+\PYGZsh{} \PYG{k}{so}      \PYG{l+m}{01};\PYG{l+m}{35}           \PYGZsh{} SOCK
+\PYGZsh{} \PYGZsh{}\PYG{k}{do}     \PYG{l+m}{01};\PYG{l+m}{35}           \PYGZsh{} DOOR
+\PYGZsh{} \PYG{k}{bd}      \PYG{l+m}{40};\PYG{l+m}{33};\PYG{l+m}{01}        \PYGZsh{} BLK
+\PYGZsh{} \PYG{k}{cd}      \PYG{l+m}{40};\PYG{l+m}{33};\PYG{l+m}{01}        \PYGZsh{} CHR
+\PYGZsh{} or      \PYG{l+m}{40};\PYG{l+m}{31};\PYG{l+m}{01}        \PYGZsh{} ORPHAN
+\PYGZsh{} \PYGZsh{}mi     \PYG{l+m}{00}              \PYGZsh{} MISSING
+\PYGZsh{} \PYG{n+nb}{su}      \PYG{l+m}{37};\PYG{l+m}{41}           \PYGZsh{} SETUID
+\PYGZsh{} sg      \PYG{l+m}{30};\PYG{l+m}{43}           \PYGZsh{} SETGID
+\PYGZsh{} \PYGZsh{}ca     \PYG{l+m}{30};\PYG{l+m}{41}           \PYGZsh{} CAPABILITY
+\PYGZsh{} \PYG{n+nb}{tw}      \PYG{l+m}{30};\PYG{l+m}{42}           \PYGZsh{} STICKY\PYGZus{}OTHER\PYGZus{}WRITABLE
+\PYGZsh{} ow      \PYG{l+m}{34};\PYG{l+m}{42}           \PYGZsh{} OTHER\PYGZus{}WRITABLE
+\PYGZsh{} \PYG{k}{st}      \PYG{l+m}{37};\PYG{l+m}{44}           \PYGZsh{} STICKY
+\PYGZsh{} \PYG{k}{ex}      \PYG{l+m}{01};\PYG{l+m}{32}           \PYGZsh{} EXEC
+
+\PYGZsh{} default values from \PYG{k}{lf} \PYG{p}{(}with matching order\PYG{p}{)}
+\PYGZsh{} ln      \PYG{l+m}{01};\PYG{l+m}{36}   \PYGZsh{} LINK
+\PYGZsh{} or      \PYG{l+m}{31};\PYG{l+m}{01}   \PYGZsh{} ORPHAN
+\PYGZsh{} \PYG{n+nb}{tw}      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} STICKY\PYGZus{}OTHER\PYGZus{}WRITABLE
+\PYGZsh{} ow      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} OTHER\PYGZus{}WRITABLE
+\PYGZsh{} \PYG{k}{st}      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} STICKY
+\PYGZsh{} \PYG{k}{di}      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} DIR
+\PYGZsh{} \PYG{n+nb}{pi}      \PYG{l+m}{33}      \PYGZsh{} FIFO
+\PYGZsh{} \PYG{k}{so}      \PYG{l+m}{01};\PYG{l+m}{35}   \PYGZsh{} SOCK
+\PYGZsh{} \PYG{k}{bd}      \PYG{l+m}{33};\PYG{l+m}{01}   \PYGZsh{} BLK
+\PYGZsh{} \PYG{k}{cd}      \PYG{l+m}{33};\PYG{l+m}{01}   \PYGZsh{} CHR
+\PYGZsh{} \PYG{n+nb}{su}      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} SETUID
+\PYGZsh{} sg      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} SETGID
+\PYGZsh{} \PYG{k}{ex}      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} EXEC
+\PYGZsh{} \PYG{k}{fi}      \PYG{l+m}{00}      \PYGZsh{} FILE
+
+\PYGZsh{} \PYG{k}{file} types \PYG{p}{(}with matching order\PYG{p}{)}
+ln      \PYG{l+m}{01};\PYG{l+m}{36}   \PYGZsh{} LINK
+or      \PYG{l+m}{31};\PYG{l+m}{01}   \PYGZsh{} ORPHAN
+\PYG{n+nb}{tw}      \PYG{l+m}{34}      \PYGZsh{} STICKY\PYGZus{}OTHER\PYGZus{}WRITABLE
+ow      \PYG{l+m}{34}      \PYGZsh{} OTHER\PYGZus{}WRITABLE
+\PYG{k}{st}      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} STICKY
+\PYG{k}{di}      \PYG{l+m}{01};\PYG{l+m}{34}   \PYGZsh{} DIR
+\PYG{n+nb}{pi}      \PYG{l+m}{33}      \PYGZsh{} FIFO
+\PYG{k}{so}      \PYG{l+m}{01};\PYG{l+m}{35}   \PYGZsh{} SOCK
+\PYG{k}{bd}      \PYG{l+m}{33};\PYG{l+m}{01}   \PYGZsh{} BLK
+\PYG{k}{cd}      \PYG{l+m}{33};\PYG{l+m}{01}   \PYGZsh{} CHR
+\PYG{n+nb}{su}      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} SETUID
+sg      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} SETGID
+\PYG{k}{ex}      \PYG{l+m}{01};\PYG{l+m}{32}   \PYGZsh{} EXEC
+\PYG{k}{fi}      \PYG{l+m}{00}      \PYGZsh{} FILE
+
+\PYGZsh{} archives or compressed \PYG{p}{(}dircolors defaults\PYG{p}{)}
+*.tar   \PYG{l+m}{01};\PYG{l+m}{31}
+*.tgz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.arc   \PYG{l+m}{01};\PYG{l+m}{31}
+*.arj   \PYG{l+m}{01};\PYG{l+m}{31}
+*.taz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.lha   \PYG{l+m}{01};\PYG{l+m}{31}
+*.lz4   \PYG{l+m}{01};\PYG{l+m}{31}
+*.lzh   \PYG{l+m}{01};\PYG{l+m}{31}
+*.lzma  \PYG{l+m}{01};\PYG{l+m}{31}
+*.tlz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.txz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.tzo   \PYG{l+m}{01};\PYG{l+m}{31}
+*.t7z   \PYG{l+m}{01};\PYG{l+m}{31}
+*.zip   \PYG{l+m}{01};\PYG{l+m}{31}
+*.z     \PYG{l+m}{01};\PYG{l+m}{31}
+*.dz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.gz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.lrz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.\PYG{n+nb}{lz}    \PYG{l+m}{01};\PYG{l+m}{31}
+*.lzo   \PYG{l+m}{01};\PYG{l+m}{31}
+*.xz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.zst   \PYG{l+m}{01};\PYG{l+m}{31}
+*.tzst  \PYG{l+m}{01};\PYG{l+m}{31}
+*.bz2   \PYG{l+m}{01};\PYG{l+m}{31}
+*.bz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.tbz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.tbz2  \PYG{l+m}{01};\PYG{l+m}{31}
+*.tz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.deb   \PYG{l+m}{01};\PYG{l+m}{31}
+*.rpm   \PYG{l+m}{01};\PYG{l+m}{31}
+*.jar   \PYG{l+m}{01};\PYG{l+m}{31}
+*.war   \PYG{l+m}{01};\PYG{l+m}{31}
+*.ear   \PYG{l+m}{01};\PYG{l+m}{31}
+*.sar   \PYG{l+m}{01};\PYG{l+m}{31}
+*.rar   \PYG{l+m}{01};\PYG{l+m}{31}
+*.alz   \PYG{l+m}{01};\PYG{l+m}{31}
+*.ace   \PYG{l+m}{01};\PYG{l+m}{31}
+*.zoo   \PYG{l+m}{01};\PYG{l+m}{31}
+*.cpio  \PYG{l+m}{01};\PYG{l+m}{31}
+*.\PYG{l+m}{7}z    \PYG{l+m}{01};\PYG{l+m}{31}
+*.rz    \PYG{l+m}{01};\PYG{l+m}{31}
+*.cab   \PYG{l+m}{01};\PYG{l+m}{31}
+*.\PYG{n+nb}{wim}   \PYG{l+m}{01};\PYG{l+m}{31}
+*.swm   \PYG{l+m}{01};\PYG{l+m}{31}
+*.dwm   \PYG{l+m}{01};\PYG{l+m}{31}
+*.esd   \PYG{l+m}{01};\PYG{l+m}{31}
+
+\PYGZsh{} image formats \PYG{p}{(}dircolors defaults\PYG{p}{)}
+*.jpg   \PYG{l+m}{01};\PYG{l+m}{35}
+*.jpeg  \PYG{l+m}{01};\PYG{l+m}{35}
+*.mjpg  \PYG{l+m}{01};\PYG{l+m}{35}
+*.mjpeg \PYG{l+m}{01};\PYG{l+m}{35}
+*.gif   \PYG{l+m}{01};\PYG{l+m}{35}
+*.bmp   \PYG{l+m}{01};\PYG{l+m}{35}
+*.pbm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.pgm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.ppm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.tga   \PYG{l+m}{01};\PYG{l+m}{35}
+*.xbm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.xpm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.tif   \PYG{l+m}{01};\PYG{l+m}{35}
+*.tiff  \PYG{l+m}{01};\PYG{l+m}{35}
+*.png   \PYG{l+m}{01};\PYG{l+m}{35}
+*.svg   \PYG{l+m}{01};\PYG{l+m}{35}
+*.svgz  \PYG{l+m}{01};\PYG{l+m}{35}
+*.mng   \PYG{l+m}{01};\PYG{l+m}{35}
+*.pcx   \PYG{l+m}{01};\PYG{l+m}{35}
+*.mov   \PYG{l+m}{01};\PYG{l+m}{35}
+*.mpg   \PYG{l+m}{01};\PYG{l+m}{35}
+*.mpeg  \PYG{l+m}{01};\PYG{l+m}{35}
+*.m2v   \PYG{l+m}{01};\PYG{l+m}{35}
+*.\PYG{k}{mkv}   \PYG{l+m}{01};\PYG{l+m}{35}
+*.webm  \PYG{l+m}{01};\PYG{l+m}{35}
+*.ogm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.mp4   \PYG{l+m}{01};\PYG{l+m}{35}
+*.m4v   \PYG{l+m}{01};\PYG{l+m}{35}
+*.mp4v  \PYG{l+m}{01};\PYG{l+m}{35}
+*.vob   \PYG{l+m}{01};\PYG{l+m}{35}
+*.qt    \PYG{l+m}{01};\PYG{l+m}{35}
+*.nuv   \PYG{l+m}{01};\PYG{l+m}{35}
+*.wmv   \PYG{l+m}{01};\PYG{l+m}{35}
+*.asf   \PYG{l+m}{01};\PYG{l+m}{35}
+*.rm    \PYG{l+m}{01};\PYG{l+m}{35}
+*.rmvb  \PYG{l+m}{01};\PYG{l+m}{35}
+*.flc   \PYG{l+m}{01};\PYG{l+m}{35}
+*.avi   \PYG{l+m}{01};\PYG{l+m}{35}
+*.fli   \PYG{l+m}{01};\PYG{l+m}{35}
+*.flv   \PYG{l+m}{01};\PYG{l+m}{35}
+*.gl    \PYG{l+m}{01};\PYG{l+m}{35}
+*.\PYG{k}{dl}    \PYG{l+m}{01};\PYG{l+m}{35}
+*.xcf   \PYG{l+m}{01};\PYG{l+m}{35}
+*.xwd   \PYG{l+m}{01};\PYG{l+m}{35}
+*.yuv   \PYG{l+m}{01};\PYG{l+m}{35}
+*.cgm   \PYG{l+m}{01};\PYG{l+m}{35}
+*.emf   \PYG{l+m}{01};\PYG{l+m}{35}
+*.ogv   \PYG{l+m}{01};\PYG{l+m}{35}
+*.ogx   \PYG{l+m}{01};\PYG{l+m}{35}
+
+\PYGZsh{} audio formats \PYG{p}{(}dircolors defaults\PYG{p}{)}
+*.aac   \PYG{l+m}{00};\PYG{l+m}{36}
+*.\PYG{k}{au}    \PYG{l+m}{00};\PYG{l+m}{36}
+*.flac  \PYG{l+m}{00};\PYG{l+m}{36}
+*.m4a   \PYG{l+m}{00};\PYG{l+m}{36}
+*.mid   \PYG{l+m}{00};\PYG{l+m}{36}
+*.midi  \PYG{l+m}{00};\PYG{l+m}{36}
+*.mka   \PYG{l+m}{00};\PYG{l+m}{36}
+*.mp3   \PYG{l+m}{00};\PYG{l+m}{36}
+*.mpc   \PYG{l+m}{00};\PYG{l+m}{36}
+*.ogg   \PYG{l+m}{00};\PYG{l+m}{36}
+*.ra    \PYG{l+m}{00};\PYG{l+m}{36}
+*.wav   \PYG{l+m}{00};\PYG{l+m}{36}
+*.oga   \PYG{l+m}{00};\PYG{l+m}{36}
+*.opus  \PYG{l+m}{00};\PYG{l+m}{36}
+*.spx   \PYG{l+m}{00};\PYG{l+m}{36}
+*.xspf  \PYG{l+m}{00};\PYG{l+m}{36}
+\end{MintedVerbatim}
