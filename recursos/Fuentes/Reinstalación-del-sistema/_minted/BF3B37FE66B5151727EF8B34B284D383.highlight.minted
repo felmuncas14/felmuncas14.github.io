@@ -1,7 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-nmcli\PYG{+w}{ }connection\PYG{+w}{ }show\PYG{+w}{ }\PYG{c+c1}{\PYGZsh{} Me muestra las redes que hay guardadas, copio el UUID}
-\PYG{c+c1}{\PYGZsh{} de la red a la que me quiero conectar.}
-nmcli\PYG{+w}{ }connection\PYG{+w}{ }edit\PYG{+w}{ }UUID
-\PYG{n+nb}{set}\PYG{+w}{ }connection.autoconnect\PYG{o}{=}yes
-\PYG{n+nb}{set}\PYG{+w}{ }connection.autoconnect\PYGZhy{}retries\PYG{o}{=}\PYG{l+m}{0}\PYG{+w}{    }\PYG{c+c1}{\PYGZsh{} Intenta siempre reconectarse.}
-\end{MintedVerbatim}

@@ -87,4 +87,13 @@
     en el inicio de systemd, y aunque en los enlaces no especificara el
     puerto porque dentro del contenedor era el 22, fuera era el 222. Y por eso
     no funcionaba.
+
+    \section{Configurar ssh}
+    Es interesante la aproximación de Codeberg, que muestra en su guía sobre cómo crear
+    las claves ssh, disponible \href{https://docs.codeberg.org/security/ssh-key/}{aquí},
+    archivado \href{https://web.archive.org/web/20260205114835/https://docs.codeberg.org/security/ssh-key/}
+    {aquí}, para que se puedan alternar distintas claves SSH para que se ponga
+    automáticamente la de GitHub cuando me conecte allí, o a mi Instalación
+    local cuando acceda a ella. El archivo de configuración donde se hace esto es
+    en \texttt{~/.ssh/config}, que no expongo públicamente.
 \end{document}
