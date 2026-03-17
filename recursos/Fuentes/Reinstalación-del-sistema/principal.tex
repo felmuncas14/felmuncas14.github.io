@@ -134,8 +134,6 @@
 		   \subitem Carpetas compartidas en Syncthing, pues si no
 		   existen con la carpeta \texttt{.synchting} dentro, Syncthing
 		   se bloquea.
-	   \item Autenticador Proton
-		   \subitem Exportación de las claves almacenadas.
 	   \item Rclone
 		   \subitem Archivo de configuración de Rclone, que actualmente
 		   se encuentra en
@@ -165,6 +163,8 @@
            \subitem También tengo que guardar la lista de frases contraseña
            que tengo en español. De la que guardo una copia en este mismo
            USB.
+           \subitem Y la base de datos de los códigos TOTP que tengo en la carpeta
+           Compartir con nombre de archivo «códigos.kdbx».
 	   \item DWM
 		   \subitem Carpeta \texttt{.barra} en el directorio raíz del
 		   usuario.
@@ -292,10 +292,6 @@
     cambia si instalo Synchting de nuevo (aunque sea la misma versión porque
     mantenga actualizada la del ordenador), por tanto solamente copio el resto.
 
-    \section{Instalación del Autenticador de Proton}
-    Simplemente sigo las indicaciones de instalación de su web. Y seguidamente
-    importo el archivo de claves que he guardado previamente.
-
     \section{Instalación de Rclone}
     Instalar Rclone siguiendo las instrucciones de instalación de su página web
     y copiar el archivo de configuración guardado donde Rclone tenga su archivo
@@ -408,6 +404,10 @@
     Es posible que para que se mantengan los ajustes de apariencia de las
     aplicaciones sea necesario tener instalado el paquete
     \texttt{lxde-settings-daemon}.
+
+    \section{Utilización de NextDNS}
+    Iniciar sesión en Internet en la cuenta de NextDNS para el ordenador y configurarla
+    tanto en el navegador como en el sistema siguiendo las instrucciones que indican.
 
     \section{Terminación}
     Desinstalar las herramientas como \texttt{wget} y \texttt{curl} que se hayan

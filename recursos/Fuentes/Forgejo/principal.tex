@@ -42,7 +42,31 @@
     \tableofcontents
     \clearpage
 
+    \section{Muy importante}
+    Todo repositorio en mi instancia de Forgejo se deberá configurar el empuje
+    automático de repositorios a la instancia de Forgejo que deberé tener instalada
+    en el móvil. Por tanto, \textbf{solamente podré iniciar la instancia cuando
+    esté conectado al WiFi de móvil por USB}. El detalle del USB es para todavía
+    mayor seguridad. De esta forma, la instancia siempre estará totalmente asilada
+    de otros dispositivos que no sean ni mi ordenador ni mi móvil. A los que no
+    les debe importar lo que yo haga.
+
+    Es posible que tenga que usar \texttt{nmcli} para ver las conexiones disponibles,
+    la del móvil comenzará por \texttt{enx}, y entonces me desconecto con \texttt{nmcli device
+    down dispositivo} para desconectarme del dispositivo, y ya me quedo con la del móvil.
+    Para configurarlo para que funcione con el móvil tendré que comprobar
+    la ip de mi móvil buscando en la configuración.
+
+    La cuenta de administrador de la instancia del móvil será la misma con la
+    misma contraseña que la del ordenador.
+
     \section{Instalación actual}
+
+    \subsection{Instalación en el móvil}
+    Para instalarlo en el móvil es importante elegir en la configuración de la base de
+    datos la base de datos SQLite, si no a mí actualmente no me funciona.
+
+    \subsection{Instalación en el ordenador}
     Forgejo lo tengo instalado desde un contenedor en podman, que se inicia automáticamente como
     un servicio de systemd que se encuentra en \texttt{/etc/containers/systemd/forgejo.container}.
     Tal y como lo describe la documentación de Forgejo actualmente \href{https://forgejo.org/docs/latest/admin/installation/docker/}
@@ -96,4 +120,39 @@
     automáticamente la de GitHub cuando me conecte allí, o a mi Instalación
     local cuando acceda a ella. El archivo de configuración donde se hace esto es
     en \texttt{~/.ssh/config}, que no expongo públicamente.
+
+    \section{Copia de seguridad}
+    \subsection{Forgejo del móvil}
+    Todos los repositorios deben tener una instancia espejo establecida. Los pasos
+    son los siguientes:
+
+    \begin{enumerate}
+        \item Crear un nuevo repositorio en el ordenador (siempre hay que seguir estos
+        pasos al crearlo).
+        \item Crear otro mismo repositorio con el mismo nombre que el de la instancia del móvil.
+        \item Ir al apartado de configuración del repositorio en el ordenador.
+        \item Ir a los «Mirror settings».
+        \item Copiar el enlace que se me da en el repositorio del móvil http como si
+        fuera a clonar el repositorio (del Forgejo del móvil).
+        \item Pegar el enlace en el «Git remote repository URL».
+        \item Activar la opción de sincronizar cuando se haga un «commit».
+        \item Abrir el apartado de autorización, no usar la autorización por SSH, si no
+        la de usuario y contraseña. Metiendo las mismas exactamente igual que en mi propia
+        instancia.
+        \item Una vez dado a agregar, darle al botón de sincronizar en el momento (si no
+        se sincronizará más tarde).
+    \end{enumerate}
+
+    \subsection{Con Rclone}
+    Se guarda automáticamente una copia del volumen exportado en un archivo \texttt{tar},
+    actualmente se hace con el comando \texttt{sudo podman volume export forgejo-data -o forgejo.tar}.
+    Esto lo hago con \texttt{crontab} con el superusuario, pues el contenedor necesita
+    permisos elevados por el momento (lo podría cambiar). Para ello, hago \texttt{sudo crontab -e}
+    y añado una línea como la que sigue:
+
+    \texttt{@reboot podman volume export forgejo-data -o /home/usuario/Documentos/forgejo.tar}
+
+    Como mi carpeta de documentos deberá estar sincronizada con Rclone en la nube, los
+    datos estarán siempre en esa nube. Y en caso de pérdida solamente tengo que restaurar
+    de la papelera de la cuenta y navegar con Rclone los archivos para buscar ese.
 \end{document}

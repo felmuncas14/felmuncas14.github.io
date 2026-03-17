@@ -1,5 +1,3 @@
-$HOME/.config/systemd/user.control/rclone.service
-$HOME/.config/systemd/user.control/rclone_e.service
 $HOME/Documentos/Gestión del sistema/Copias de seguridad/Copia de seguridad de documentos.sh
 $HOME/Documentos/Gestión del sistema/Copias de seguridad/Copia de seguridad de escritorio.sh
 $HOME/Documentos/Gestión del sistema/Copias de seguridad/Copia de seguridad de imágenes.sh
