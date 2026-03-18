@@ -66,6 +66,16 @@
     Para instalarlo en el móvil es importante elegir en la configuración de la base de
     datos la base de datos SQLite, si no a mí actualmente no me funciona.
 
+    También hay un problema con el ssh, pues no viene instalado por defecto. Para comprobar
+    si es porque no esta disponible, basta poner en el \texttt{app.ini} de Forgejo que
+    se encuentra en \texttt{com.termux/files/usr/bin/custom/conf} la opción
+    «DISABLE\_SSH = true»,
+    no es que se desactive en cualquier caso. Al estar activada esa opción se
+    desactivan las opciones de ssh si resulta que no está bien instalado.
+
+    No funciona, ni instalando y activando los agentes de SSH ni con el servidor
+    de ssh nativo de Forgejo.
+
     \subsection{Instalación en el ordenador}
     Forgejo lo tengo instalado desde un contenedor en podman, que se inicia automáticamente como
     un servicio de systemd que se encuentra en \texttt{/etc/containers/systemd/forgejo.container}.
@@ -123,6 +133,10 @@
 
     \section{Copia de seguridad}
     \subsection{Forgejo del móvil}
+    Primero hay que ver cuál es la ip de mi móvil (en la configuración del teléfono),
+    y actualizar mi archivo \texttt{/etc/hosts} para que el registro \texttt{movil}
+    apunte realmente a la ip del móvil.
+
     Todos los repositorios deben tener una instancia espejo establecida. Los pasos
     son los siguientes:
 
