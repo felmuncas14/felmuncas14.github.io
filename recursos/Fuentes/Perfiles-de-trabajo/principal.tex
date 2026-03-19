@@ -1,0 +1,77 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+
+\title{Perfiles de trabajo}
+\author{Felipe Muñoz Casasola}
+\date{19 de marzo de 2026}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    \tableofcontents
+    \clearpage
+
+    \section{Gestión de perfiles}
+    En mi carpeta \texttt{$\sim$/Documentos/Gestión\ del\ sistema/Perfiles} se
+    encuentran unos guiones en Bash que inician automáticamente el perfiles
+    deseado. Cada guion tiene un nombre descriptivo de lo que almacena.
+    Debe estar instalado el paquete \texttt{podman-toolbox}, y se puede
+    comprobar que ha funcionado porque el nombre de la máquina a partir de
+    ese momento es toolbox.
+
+    \section{Instalación}
+    Se instaló desde el gestor de paquetes con
+    \texttt{sudo apt install podman-toolbox}.
+
+    \section{Creación de un nuevo perfil}
+    Para crear un nuevo perfil primero tengo que ejecutar el comando:
+
+    \texttt{toolbox create --distro ubuntu/arch/fedora --release 22.04/rolling/43f}
+
+    Y para meterme en el contenedor recién creado hago:
+
+    \texttt{toolbox enter ubuntu/arch/fedora-toolbox-22.04/rolling/43f}
+
+    Una vez instalados los paquetes necesarios dentro del contenedor y con
+    el entorno que desee me puedo salir. Y ejecutar el siguiente comando
+    para guardar los cambios:
+
+    \texttt{podman commit --squash ubuntu-toolbox-22.04 localhost/my-ubuntu-toolbox:22.04}
+
+    He sacado esta información (donde estará actualizada) de
+    \href{https://containertoolbx.org/doc/}{https://containertoolbx.org/doc/}.
+    Y de \href{https://containertoolbx.org/install/}
+    {https://containertoolbx.org/install/}. Para más información consultar su
+    página web oficial: \href{https://containertoolbx.org}
+    {https://containertoolbx.org}.
+\end{document}
