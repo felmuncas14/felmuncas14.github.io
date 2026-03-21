@@ -30,6 +30,7 @@
 \usepackage[margin=3cm]{geometry}
 \usepackage{microtype}
 \usepackage[pdfusetitle]{hyperref}
+\usepackage{minted}
 
 \title{Perfiles de trabajo}
 \author{Felipe Muñoz Casasola}
@@ -67,6 +68,24 @@
     es donde se guardan los archivos de configuración por defecto de las aplicaciones.
     Y puede interferir con mi configuración si dejo la que hay por defecto (pues
     usaría la misma carpeta \texttt{.config} que mi ordenador).
+
+    La única forma de hacer esto ha sido añadir el siguiente código en
+    mi \texttt{.bashrc}, gracias al usuario inikishev por compartirlo en
+    \href{https://github.com/containers/toolbox/issues/348}{este enlace},
+    que está archivado \href{https://web.archive.org/web/20260317144147/https://github.com/containers/toolbox/issues/348}
+    {aquí}:
+
+    \begin{minted}{bash}
+# Check if we're running inside a toolbox
+TOOLBOX_NAME=""
+if [ -f "/run/.containerenv" ]; then
+	TOOLBOX_NAME=$(sed -nr 's/^name="(.*)"$/\1/p' /run/.containerenv)
+        HOME="$HOME/.toolbox/homedir/$TOOLBOX_NAME/$USER"
+        mkdir -p "$HOME"
+        bash
+        exit 0
+fi
+    \end{minted}
 
     Lo ideal es ahora crear en mi ordenador una variable para referenciar el
     directorio anterior del contenedor. Para poder publicar mi configuración
