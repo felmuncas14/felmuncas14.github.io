@@ -77,7 +77,7 @@ GUARDAR_CONFIG = copiar-config.sh
 ###############################################################################
 
 .PHONY: all
-all: guardar-config com
+all: guardar-config
 
 # Compila los proyectos de LaTeX.
 .PHONY: com

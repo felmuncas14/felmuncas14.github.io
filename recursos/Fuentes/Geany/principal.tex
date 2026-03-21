@@ -1,0 +1,94 @@
+% Felipe Muñoz Casasola
+% This is free and unencumbered software released into the public domain.
+
+% Anyone is free to copy, modify, publish, use, compile, sell, or
+% distribute this software, either in source code form or as a compiled
+% binary, for any purpose, commercial or non-commercial, and by any
+% means.
+
+% In jurisdictions that recognize copyright laws, the author or authors
+% of this software dedicate any and all copyright interest in the
+% software to the public domain. We make this dedication for the benefit
+% of the public at large and to the detriment of our heirs and
+% successors. We intend this dedication to be an overt act of
+% relinquishment in perpetuity of all present and future rights to this
+% software under copyright law.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+% OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+% ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+% OTHER DEALINGS IN THE SOFTWARE.
+
+% For more information, please refer to <https://unlicense.org/>
+
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{verbatim}
+
+\title{Geany}
+\author{Felipe Muñoz Casasola}
+\date{21 de marzo de 2026}
+
+\begin{document}
+    \maketitle
+    \clearpage
+    
+    \section{Instalación}
+    Lo mejor es compilarlo desde 0. Para ello puedo usar toolbox para
+    tener ahí dentro un contenedor de mi ordenador y compilarlo
+    instalando los paquetes necesarios sin tener que instalármelos en
+    mi sistema anfitrión para compilarlo. Para más información sobre
+    eso puedo mirar la guía \texttt{Perfiles-de-trabajo.pdf}.
+
+    \section{Complementos}
+    Es posible que si lo hago desde un contenedor haya algún problema
+    con \texttt{pkg-config}. Para lo que tengo que copiar el archivo
+    \texttt{geany.pc} que hay en la carpeta donde está el código
+    fuente de Geany, y actualmente lo tengo que copiar en
+    \texttt{/usr/lib/pkgconfig/}.
+
+    También tengo que comprobar que estén activados los Complementos
+    que quiero. Y si no fuera así ejecutar
+    \texttt{./configure --enable-complemento} para ver por qué no
+    está activado e instalar las dependencias que faltan (con
+    \texttt{apt search}).
+
+    \section{Configuración}
+    Actualmente el único complemento que tengo es «Project organizer».
+    Tengo el siguiente añadido en mi archivo
+    \texttt{\$RUBY/.config/geany/snippets.conf}:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {systemd}{inc/snippets.conf}
+
+    El tema del editor es Dracula y mi archivo de configuración tiene el
+    siguiente contenido:
+
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {systemd}{inc/geany.conf}
+
+    Y en la wiki de Geany hay guías, en concreto por el momento
+    solamente hay una para tener un analizador estático de código
+    en Ruby. Pero quizá añadan más, está en \href{https://wiki.geany.org/start}
+    {https://wiki.geany.org/start}.
+
+    \section{Rubocop}
+    Esta aplicación instalada desde \texttt{sudo gem install rubocop} hace
+    una comprobación del estilo y la sintaxis en Ruby. Tal y como lo
+    tengo configurado, arregla automáticamente los errores de estilo
+    que no afectan en ningún caso a la lógica del programa. La
+    configuración se encuentra en
+    \texttt{\$RUBY/.config/rubocop/rubocop.conf}.
+    
+    \inputminted[breaklines, breakanywhere, breaksymbolleft="", breaksymbolright="", breakanywheresymbolpre="", breakanywheresymbolpost=""]
+    {yaml}{inc/rubocop.yml}
+\end{document}

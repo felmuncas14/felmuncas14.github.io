@@ -62,6 +62,16 @@
 
     \texttt{toolbox enter ubuntu/arch/fedora-toolbox-22.04/rolling/43f}
 
+    Lo \textbf{más importante} es modificar antes que nada la variable \texttt{HOME},
+    con el comando \texttt{export HOME="/mi/ruta/HOME/del/perfil"}. En esa ruta
+    es donde se guardan los archivos de configuración por defecto de las aplicaciones.
+    Y puede interferir con mi configuración si dejo la que hay por defecto (pues
+    usaría la misma carpeta \texttt{.config} que mi ordenador).
+
+    Lo ideal es ahora crear en mi ordenador una variable para referenciar el
+    directorio anterior del contenedor. Para poder publicar mi configuración
+    sin revelar la ruta real dentro de mi sistema.
+    
     Una vez instalados los paquetes necesarios dentro del contenedor y con
     el entorno que desee me puedo salir. Y ejecutar el siguiente comando
     para guardar los cambios:

@@ -1,0 +1,3 @@
+$RUBY/.config/geany/geany.conf
+$RUBY/.config/geany/snippets.conf
+$RUBY/.config/rubocop/rubocop.yml
