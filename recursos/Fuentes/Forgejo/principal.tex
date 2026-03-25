@@ -135,7 +135,17 @@
     \subsection{Forgejo del móvil}
     Primero hay que ver cuál es la ip de mi móvil (en la configuración del teléfono),
     y actualizar mi archivo \texttt{/etc/hosts} para que el registro \texttt{movil}
-    apunte realmente a la ip del móvil.
+    apunte realmente a la ip del móvil. Y actualizar el cortafuegos \texttt{ufw} para que
+    permita las conexiones de podman al móvil. Para ver si ha habido un bloqueo puedo
+    mirar con \texttt{sudo dmesg}. Elimino la regla antigua del cortafuegos con
+    \texttt{sudo ufw status numbered}, apunto el número de la regla a eleminar. Y
+    entonces ejecuto \texttt{sudo ufw delete <num\_regla>}. Finalmente hago:
+
+    \texttt{sudo ufw allow out on podman1 to 10.47.157.26 port 3000}
+
+    Poniendo la ip que tenga mi móvil en ese momento. Y sustituyendo
+    \texttt{podman1} por el nombre de la interfaz desde la que se conecte
+    Forgejo (aparecerá en \texttt{sudo dmesg}).
 
     Todos los repositorios deben tener una instancia espejo establecida. Los pasos
     son los siguientes:
