@@ -141,11 +141,12 @@
     \texttt{sudo ufw status numbered}, apunto el número de la regla a eleminar. Y
     entonces ejecuto \texttt{sudo ufw delete <num\_regla>}. Finalmente hago:
 
-    \texttt{sudo ufw allow out on podman1 to 10.47.157.26 port 3000}
+    \texttt{sudo ufw route allow in on podman1 out on enx0e34bac885e7 to 10.47.157.26 port 3000}
 
     Poniendo la ip que tenga mi móvil en ese momento. Y sustituyendo
     \texttt{podman1} por el nombre de la interfaz desde la que se conecte
-    Forgejo (aparecerá en \texttt{sudo dmesg}).
+    Forgejo (aparecerá en \texttt{sudo dmesg}), y la interfaz de red de mi móvil
+    también deberá cambiar.
 
     Todos los repositorios deben tener una instancia espejo establecida. Los pasos
     son los siguientes:
