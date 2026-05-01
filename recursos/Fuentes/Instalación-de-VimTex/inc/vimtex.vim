@@ -9,9 +9,20 @@
 
 let g:vimtex_compiler_latexmk = {
         \ 'aux_dir' : 'build/',
-        \ 'pdfxelatex' : 'xelatex',
-	\}
-
+        \ '-xelatex' : '',
+        \}
+let g:vimtex_compiler_latexmk_engines = {                                      
+        \ '_'                : '-xelatex',                                             
+        \ 'pdfdvi'           : '-pdfdvi',                                          
+        \ 'pdfps'            : '-pdfps',                                           
+        \ 'pdflatex'         : '-pdf',                                             
+        \ 'luatex'           : '-lualatex',                                        
+        \ 'lualatex'         : '-lualatex',                                        
+        \ 'xelatex'          : '-xelatex',                                         
+        \ 'context (pdftex)' : '-pdf -pdflatex=texexec',                        
+        \ 'context (luatex)' : '-pdf -pdflatex=context',                        
+        \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',              
+        \}
 let g:vimtex_view_general_viewer = 'qpdfview'                                    
 let g:vimtex_view_general_options                                                
     \ = '--unique @pdf\#src:@tex:@line:@col'

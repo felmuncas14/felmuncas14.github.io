@@ -8,8 +8,8 @@
 " Configuración introducida por mí
 "
 
-let maplocalleader = " "	" Establece la tecla <localleader> a usar
-let conceallevel = 2	" Esto es una recomendación del manual para la función
+let maplocalleader = " "        " Establece la tecla <localleader> a usar
+let conceallevel = 2    " Esto es una recomendación del manual para la función
 " de sustituir algunos comandos por texto.
 
 set number

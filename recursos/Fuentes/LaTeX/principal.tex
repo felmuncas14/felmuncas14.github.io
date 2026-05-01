@@ -126,7 +126,22 @@ begin{minted}[breaklines, breakanywhere, brea    ksymbolleft="", breaksymbolrigh
 	ejemplo
 end{minted}
 	   \end{minted}
-	   
+	   \item El comando \texttt{center} no es correcto, existe como            
+               consecuencia del entorno \texttt{center}, que es el que se debe     
+               usar. Parece que los entornos que se usan como comandos tienen el   
+               mismo significado, pero como si el end estuviera al final del    
+               bloque.                                                          
+           \item Para referenciar elementos en \LaTeX{} se usa el comando          
+               \texttt{label} para crear las etiquetas (que deben tener el         
+               formato \texttt{fig:cat1:cat2} dividiendo las distintas             
+               categorías a las que pertenence el objeto referenciado con dos      
+               puntos. Nota: cuando se hace referencia a la etiqueta con           
+               \texttt{ref} o sus variantes se sustituye el espacio del comando 
+               con la anterior palabra por $\sim$. Por ejemplo: \texttt{En         
+               la$\sim$\ref{fig:1}}.                                            
+           \item Para que se muestre el nombre del objeto referenciado se usa      
+               \texttt{autoref}, que viene en el paquete \texttt{hyperref}, por    
+               ejemplo: Figura 1.
    \end{itemize}
 
    \section{Crear notas al pie de página en tablas o entornos matemáticos}
