@@ -44,4 +44,12 @@
 
     Más información sobre cómo funciona en su documentación y en
     \href{https://jakobgm.com/posts/vim/git-integration/}{este blog}.
+
+    El flujo de trabajo es ir escribiendo en vim lo que modifico. Para cada
+    sección modificada, hago \texttt{\textbackslash ga} para añadir el fragmento. Y \texttt{\textbackslash hs}
+    para mandárselo a git. Antes de añadirlo puedo hacer \texttt{\textbackslash gu} para deshacer
+    el fragmento.
+
+    Una vez hecho esto puedo hacer \texttt{:!git commit -m "Mensaje"} para confirmar
+    los cambios.
 \end{document}
